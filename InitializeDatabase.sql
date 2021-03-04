@@ -1,1 +1,1 @@
-//DATABASE CREATION STATEMENTS
+/*Statements to create database and tables**/
