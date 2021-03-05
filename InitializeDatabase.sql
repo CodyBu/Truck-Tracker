@@ -3,6 +3,9 @@
 /*Creates Database**/
 CREATE DATABASE TruckTracker;
 
+/*Uses database to add tables**/
+USE TruckTracker;
+
 /*Create USER table**/
 CREATE TABLE USER(
   UserID int NOT NULL AUTO_INCREMENT,
