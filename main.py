@@ -6,7 +6,7 @@ import re
 
 app = Flask(__name__)
 
-# Change this to your sepcret key (can be anything, it's for extra protection)
+# Change this to your secret key (can be anything, it's for extra protection)
 app.secret_key = 'group4'
 
 # Enter your database connection details below
@@ -25,6 +25,7 @@ def login():
     msg = ''
     # Check if "username" and "password" POST requests exist (user submitted form)
     if request.method == 'POST' and 'username' and 'password' in request.form:
+        print("Checking forms")
         # Create variables for easy access
         username = request.form['username']
         hashPassword = sha256(request.form['password'].encode()).hexdigest()
@@ -37,7 +38,7 @@ def login():
         if account:
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
-            session['id'] = account['id']
+            #session['id'] = account['id']
             session['UserName'] = account['UserName']
             return redirect(url_for('home'))
         else:
