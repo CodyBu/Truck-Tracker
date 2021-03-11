@@ -77,3 +77,9 @@ CREATE TABLE NOTE(
   CONSTRAINT EntryFK2 FOREIGN KEY (Entry) REFERENCES MAINTENANCE_ENTRY(EntryID) ON UPDATE CASCADE ON DELETE CASCADE,
   CONSTRAINT UserFK FOREIGN KEY (User)  REFERENCES USER(UserName) ON UPDATE CASCADE ON DELETE SET NULL
 );
+
+/*Adds a default admin the the database with:
+*username: admin
+*password: admin
+*/
+INSERT INTO USER VALUES ("admin", "default", "default", "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918", "Admin");
