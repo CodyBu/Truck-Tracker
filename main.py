@@ -12,7 +12,7 @@ app.secret_key = 'group4'
 # Enter your database connection details below
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'smartsQl4'
+app.config['MYSQL_PASSWORD'] = 'root'
 app.config['MYSQL_DB'] = 'TruckTracker'
 
 # Intialize MySQL
