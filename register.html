@@ -7,8 +7,7 @@
 		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 	</head>
 	<body>
-		
-		<div class="Register">
+		<div class="register">
 			<h1>Register</h1>
 			<div class="links">
 
@@ -35,9 +34,17 @@
 				<input type="text" name="lastname" placeholder="Lastname" id="lastname" required>
 
 				<label for="usertype">
-					<i class="fas fa-user"></i>
+					<i class="fas fa-truck"></i>
 				</label>
-				<input type="text" name="usertype" placeholder="Usertype" id="usertype" required>
+				<input type="text" list = "usertype" required>
+
+
+                            <datalist id = "usertype">
+                                <option>Admin</option>
+                                <option>Mechanic</option>
+								<option>Driver</option>
+
+                            </datalist>
 
 				<div class="msg">{{ msg }}</div>
 				<input type="submit" value="Register">
