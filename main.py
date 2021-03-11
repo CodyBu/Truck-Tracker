@@ -30,7 +30,7 @@ def login():
         hashPassword = sha256(request.form['password'].encode()).hexdigest()
         # Check if account exists using MySQL
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM USER WHERE UserName = %s AND HashPwd = %s' % (username, hashPassword))
+        cursor.execute('SELECT * FROM USER WHERE UserName = \"%s\" AND HashPwd = \"%s\"' % (username, hashPassword))
         # Fetch one record and return result
         account = cursor.fetchone()
         # If account exists in accounts table in out database
@@ -67,7 +67,7 @@ def register():
         firstname = request.form['firstname']
         lastname = request.form['lastname']
         username = request.form['username']
-        hashPassword = sha256(request.form['password'].encode())
+        hashPassword = sha256(request.form['password'].encode()).hexdigest()
         usertype = request.form['usertype']
 
         # Check if account exists using MySQL
@@ -112,7 +112,7 @@ def profile():
     if 'loggedin' in session:
         # We need all the account info for the user so we can display it on the profile page
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM USER WHERE UserName = %s", (session['UserName'],))
+        cursor.execute("SELECT * FROM USER WHERE UserName = \"%s\"", (session['UserName'],))
         account = cursor.fetchone()
         # Show the profile page with account info
         return render_template('profile.html', account=account)
