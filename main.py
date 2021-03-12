@@ -83,7 +83,6 @@ def register():
         elif not username or not hashPassword:
             msg = 'Please fill out the form!'
         else:
-            print("adding to database")
         # Account doesnt exists and the form data is valid, now insert new account into accounts table
             cursor.execute('INSERT INTO USER (UserName, FirstName, LastName,HashPwd, UserType) VALUES ( \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")' % (username, firstname, lastname, hashPassword, usertype))
             mysql.connection.commit()
