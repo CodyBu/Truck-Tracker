@@ -101,7 +101,7 @@ def home():
     # Check if user is loggedin
     if 'loggedin' in session:
         # User is loggedin show them the home page
-        return render_template('home.html', username=session['UserName'])
+        return render_template('admin.html', username=session['UserName'])
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
