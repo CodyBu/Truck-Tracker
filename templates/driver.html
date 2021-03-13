@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h2>DRIVER PAGE</h2>
+<p>Welcome to TRUCK TRACKER</p>
+<div> <a href="{{ url_for('profile') }}"><i class="fas fa-user-circle"></i>Employees</a></div>
+<div> <a href="{{ url_for('register') }}"><i class="fas fa-truck"></i>Truck/Trailer List</a></div>
+
+{% endblock %}

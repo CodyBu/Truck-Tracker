@@ -38,9 +38,13 @@ def login():
         if account:
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
-            #session['id'] = account['id']
             session['UserName'] = account['UserName']
-            return redirect(url_for('home'))
+            if account['UserType'] == "Admin":
+                return redirect(url_for('admin'))
+            elif account['UserType'] == "Driver":
+                return redirect(url_for('driver'))
+            elif account['UserType'] == "Mechanic":
+                return redirect(url_for('mechanic'))
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
@@ -95,13 +99,33 @@ def register():
     return render_template('register.html', msg=msg)
 
 
-# http://localhost:5000/pythinlogin/home - this will be the home page, only accessible for loggedin users
-@app.route('/pythonlogin/home')
-def home():
+# http://localhost:5000/pythinlogin/admin - this will be the admin home page, only accessible for logged in admins
+@app.route('/pythonlogin/admin')
+def admin():
     # Check if user is loggedin
     if 'loggedin' in session:
         # User is loggedin show them the home page
         return render_template('admin.html', username=session['UserName'])
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
+# http://localhost:5000/pythinlogin/driver - this will be the driver home page, only accessible for logged in drivers
+@app.route('/pythonlogin/driver')
+def driver():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('driver.html', username=session['UserName'])
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
+# http://localhost:5000/pythinlogin/mechanic - this will be the mechanic home page, only accessible for logged in mechanics
+@app.route('/pythonlogin/mechanic')
+def mechanic():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('mechanic.html', username=session['UserName'])
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
