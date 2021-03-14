@@ -25,7 +25,6 @@ def login():
     msg = ''
     # Check if "username" and "password" POST requests exist (user submitted form)
     if request.method == 'POST' and 'username' and 'password' in request.form:
-        print("Checking forms")
         # Create variables for easy access
         username = request.form['username']
         hashPassword = sha256(request.form['password'].encode()).hexdigest()
@@ -136,7 +135,7 @@ def profile():
     if 'loggedin' in session:
         # We need all the account info for the user so we can display it on the profile page
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM USER WHERE UserName = \"%s\"", (session['UserName'],))
+        cursor.execute("SELECT * FROM USER WHERE UserName = \"%s\"" % session['UserName'])
         account = cursor.fetchone()
         # Show the profile page with account info
         return render_template('profile.html', account=account)
