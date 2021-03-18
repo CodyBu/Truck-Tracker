@@ -87,7 +87,7 @@ def register():
             msg = 'Please fill out the form!'
         else:
         # Account doesnt exists and the form data is valid, now insert new account into accounts table
-            cursor.execute('INSERT INTO USER (UserName, FirstName, LastName,HashPwd, UserType) VALUES ( \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")' % (username, firstname, lastname, hashPassword, usertype))
+            cursor.execute('INSERT INTO USER (UserName, FirstName, LastName, HashPwd, UserType) VALUES ( \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")' % (username, firstname, lastname, hashPassword, usertype))
             mysql.connection.commit()
             msg = 'You have successfully registered!'
 
@@ -99,7 +99,7 @@ def register():
 
 
 # http://localhost:5000/pythinlogin/admin - this will be the admin home page, only accessible for logged in admins
-@app.route('/pythonlogin/admin')
+@app.route('/trucktracker/admin')
 def admin():
     # Check if user is loggedin
     if 'loggedin' in session:
@@ -109,7 +109,7 @@ def admin():
     return redirect(url_for('login'))
 
 # http://localhost:5000/pythinlogin/driver - this will be the driver home page, only accessible for logged in drivers
-@app.route('/pythonlogin/driver')
+@app.route('/trucktracker/driver')
 def driver():
     # Check if user is loggedin
     if 'loggedin' in session:
@@ -119,7 +119,7 @@ def driver():
     return redirect(url_for('login'))
 
 # http://localhost:5000/pythinlogin/mechanic - this will be the mechanic home page, only accessible for logged in mechanics
-@app.route('/pythonlogin/mechanic')
+@app.route('/trucktracker/mechanic')
 def mechanic():
     # Check if user is loggedin
     if 'loggedin' in session:
@@ -129,7 +129,7 @@ def mechanic():
     return redirect(url_for('login'))
 
 # http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
-@app.route('/pythonlogin/profile')
+@app.route('/trucktracker/profile')
 def profile():
     # Check if user is loggedin
     if 'loggedin' in session:
