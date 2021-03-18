@@ -142,5 +142,17 @@ def profile():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+@app.route('/trucktracker/employees')
+def employees():
+    if 'loggedin' in session:
+        # We need all the account info for the user so we can display it on the profile page
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT UserName, FirstName, LastName, UserType FROM USER WHERE UserType != \"%s\"" % "Admin")
+        employeeList = cursor.fetchall()
+        # Show the profile page with account info
+        return render_template('employees.html', employeeList=employeeList)
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
 if __name__ == '__main__':
     app.run()
