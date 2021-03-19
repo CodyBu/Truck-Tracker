@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+	<head>
+		<meta charset="utf-8">
+		<title>Register</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+	</head>
+	<body>
+		<div class="register">
+			<h1>Add Vehicle</h1>
+			<form action="{{ url_for('addVehicle') }}" method="post" autocomplete="off">
+				<label for="vehicleid">
+					<i class="fas fa-truck"></i>
+				</label>
+				<input type="text" name="vehicleid" placeholder="Vehicle ID" id="vehicleid" required>
+
+                <label for="vin">
+					<i class="fas fa-hashtag"></i>
+				</label>
+				<input type="text" name="vin" placeholder="VIN Number" id="vin" required>
+
+				<label for="mileage">
+					<i class="fas fa-tachometer-alt"></i>
+				</label>
+				<input type="text" name="mileage" placeholder="Current Mileage" id="mileage" required>
+
+				<label for="plate">
+					<i class="fas fa-user"></i>
+				</label>
+				<input type="text" name="plate" placeholder="License Plate" id="plate" required>
+
+				<label for="type">
+					<i class="fas fa-truck"></i>
+				</label>
+				<input list="types" name="type" id="type" required>
+					<datalist id="types">
+						<option value="Truck">
+						<option value="Trailer">
+					</datalist>
+				</input>
+				<div class="msg">{{ msg }}</div>
+				<input type="submit" value="Add">
+			</form>
+		</div>
+	</body>
+</html>

@@ -26,7 +26,7 @@ CREATE TABLE USER(
 CREATE TABLE VEHICLE(
   VehicleID varchar(10) NOT NULL,
   Mileage int NOT NULL,
-  VehileType varchar(8) NOT NULL,
+  VehicleType varchar(8) NOT NULL,
   VIN int NOT NULL,
   LicensePlate varchar(8) NOT NULL,
   CONSTRAINT VehiclePK PRIMARY KEY (VehicleID)

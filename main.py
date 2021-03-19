@@ -89,7 +89,7 @@ def register():
         # Account doesnt exists and the form data is valid, now insert new account into accounts table
             cursor.execute('INSERT INTO USER (UserName, FirstName, LastName, HashPwd, UserType) VALUES ( \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")' % (username, firstname, lastname, hashPassword, usertype))
             mysql.connection.commit()
-            msg = 'You have successfully registered!'
+            msg = 'Employee Added!'
 
     elif request.method == 'POST':
         # Form is empty... (no POST data)
@@ -153,6 +153,39 @@ def employees():
         return render_template('employees.html', employeeList=employeeList)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
+
+@app.route('/trucktracker/vehicle-registration', methods=['GET', 'POST'])
+def addVehicle():
+    # Output message if something goes wrong...
+    msg = ''
+    # Check if "username", "password" POST requests exist (user submitted form)
+    if request.method == 'POST' and 'vehicleid' and 'vin' and 'mileage' and 'plate' and 'type' in request.form:
+        # Create variables for easy access
+        vehicleid = request.form['vehicleid']
+        vin = int(request.form['vin'])
+        mileage = int(request.form['mileage'])
+        plate = request.form['plate']
+        type = request.form['type']
+
+        # Check if account exists using MySQL
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % vehicleid)
+        vehicle = cursor.fetchone()
+        # If account exists show error and validation checks
+        if vehicle:
+            msg = ' Vehicle already exists!'
+        else:
+            # Account doesnt exists and the form data is valid, now insert new account into accounts table
+            cursor.execute(
+                'INSERT INTO VEHICLE (VehicleID, VIN, Mileage, LicensePlate, VehicleType) VALUES ( \"%s\", %d, %d, \"%s\", \"%s\")' % (vehicleid, vin, mileage, plate, type))
+            mysql.connection.commit()
+            msg = 'Vehicle Added!'
+
+    elif request.method == 'POST':
+        # Form is empty... (no POST data)
+        msg = 'Please fill out the form!'
+    # Show registration form with message (if any)
+    return render_template('addvehicle.html', msg=msg)
 
 if __name__ == '__main__':
     app.run()
