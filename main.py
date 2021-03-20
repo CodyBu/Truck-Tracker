@@ -154,6 +154,18 @@ def employees():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+@app.route('/trucktracker/vehicles')
+def vehicles():
+    if 'loggedin' in session:
+        # We need all the vehicle info to display
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM VEHICLE")
+        vehicleList = cursor.fetchall()
+        # Show list of vehicles
+        return render_template('vehicles.html', vehicleList=vehicleList)
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
 @app.route('/trucktracker/vehicle-registration', methods=['GET', 'POST'])
 def addVehicle():
     # Output message if something goes wrong...

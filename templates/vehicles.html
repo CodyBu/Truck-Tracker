@@ -1,0 +1,32 @@
+{% extends 'layout.html' %}
+
+{% block title %}Vehicles{% endblock %}
+
+{% block content %}
+<h2>VEHICLE PAGE</h2>
+<div>
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>VIN Number</th>
+            <th>Mileage</th>
+            <th>License Plate</th>
+            <th>Vehicle Type</th>
+        </tr>
+        {% for vehicle in vehicleList %}
+        <tr>
+            <td>
+                <a href="">
+                    {{ vehicle.VehicleID }}
+                </a>
+            </td>
+            <td>{{ vehicle.VIN }}</td>
+            <td>{{ vehicle.Mileage }}</td>
+            <td>{{ vehicle.LicensePlate }}</td>
+            <td>{{ vehicle.VehicleType }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div> <a href="{{ url_for('addVehicle') }}"><i class="fas fa-truck"></i>Add Vehicle</a></div>
+{% endblock %}
