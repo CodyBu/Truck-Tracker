@@ -27,7 +27,7 @@ CREATE TABLE VEHICLE(
   VehicleID varchar(10) NOT NULL,
   Mileage int NOT NULL,
   VehicleType varchar(8) NOT NULL,
-  VIN int NOT NULL,
+  VIN varchar(17) NOT NULL,
   LicensePlate varchar(8) NOT NULL,
   CONSTRAINT VehiclePK PRIMARY KEY (VehicleID)
 );
@@ -56,7 +56,7 @@ CREATE TABLE MAINTENANCE_ENTRY(
 );
 
 /*Create SERVICE_JUNCTION table
-*Deleting entry or service will delete associated realtionships
+*Deleting entry or service will delete associated relationships
 */
 CREATE TABLE SERVICE_JUNCTION(
   Entry int NOT NULL,

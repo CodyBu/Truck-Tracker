@@ -174,7 +174,7 @@ def addVehicle():
     if request.method == 'POST' and ('vehicleid' and 'vin' and 'mileage' and 'plate' and 'type') in request.form:
         # Create variables for easy access
         vehicleid = request.form['vehicleid']
-        vin = int(request.form['vin'])
+        vin = request.form['vin']
         mileage = int(request.form['mileage'])
         plate = request.form['plate']
         type = request.form['type']
@@ -189,7 +189,7 @@ def addVehicle():
         else:
             # Account doesnt exists and the form data is valid, now insert new account into accounts table
             cursor.execute(
-                'INSERT INTO VEHICLE (VehicleID, VIN, Mileage, LicensePlate, VehicleType) VALUES ( \"%s\", %d, %d, \"%s\", \"%s\")' % (vehicleid, vin, mileage, plate, type))
+                'INSERT INTO VEHICLE (VehicleID, VIN, Mileage, LicensePlate, VehicleType) VALUES ( \"%s\", \"%s\", %d, \"%s\", \"%s\")' % (vehicleid, vin, mileage, plate, type))
             mysql.connection.commit()
             msg = 'Vehicle Added!'
 
