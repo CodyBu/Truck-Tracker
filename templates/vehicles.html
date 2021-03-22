@@ -5,28 +5,33 @@
 {% block content %}
 <h2>VEHICLE PAGE</h2>
 <div>
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>VIN Number</th>
-            <th>Mileage</th>
-            <th>License Plate</th>
-            <th>Vehicle Type</th>
-        </tr>
-        {% for vehicle in vehicleList %}
-        <tr>
-            <td>
-                <a href="">
-                    {{ vehicle.VehicleID }}
-                </a>
-            </td>
-            <td>{{ vehicle.VIN }}</td>
-            <td>{{ vehicle.Mileage }}</td>
-            <td>{{ vehicle.LicensePlate }}</td>
-            <td>{{ vehicle.VehicleType }}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    <form action="{{ url_for('vehicleProfile') }}" method="post">
+        <table>
+            <tr>
+                <th></th>
+                <th>ID</th>
+                <th>VIN Number</th>
+                <th>Mileage</th>
+                <th>License Plate</th>
+                <th>Vehicle Type</th>
+            </tr>
+            {% for vehicle in vehicleList %}
+            <tr>
+                <td><input type="radio" name="selected" value="{{ vehicle.VehicleID }}" id="{{ vehicle.VehicleID }}"></td>
+                <td>
+                    <a href="">
+                        {{ vehicle.VehicleID }}
+                    </a>
+                </td>
+                <td>{{ vehicle.VIN }}</td>
+                <td>{{ vehicle.Mileage }}</td>
+                <td>{{ vehicle.LicensePlate }}</td>
+                <td>{{ vehicle.VehicleType }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="View Vehicle">
+    </form>
 </div>
 <div> <a href="{{ url_for('addVehicle') }}"><i class="fas fa-truck"></i>Add Vehicle</a></div>
 {% endblock %}

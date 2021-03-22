@@ -66,7 +66,7 @@ def register():
     # Output message if something goes wrong...
     msg = ''
     # Check if "username", "password" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'username' and 'firstname' and 'lastname' and 'password' and 'usertype' in request.form:
+    if request.method == 'POST' and ('username' and 'firstname' and 'lastname' and 'password' and 'usertype') in request.form:
         # Create variables for easy access
         firstname = request.form['firstname']
         lastname = request.form['lastname']
@@ -171,7 +171,7 @@ def addVehicle():
     # Output message if something goes wrong...
     msg = ''
     # Check if "username", "password" POST requests exist (user submitted form)
-    if request.method == 'POST' and 'vehicleid' and 'vin' and 'mileage' and 'plate' and 'type' in request.form:
+    if request.method == 'POST' and ('vehicleid' and 'vin' and 'mileage' and 'plate' and 'type') in request.form:
         # Create variables for easy access
         vehicleid = request.form['vehicleid']
         vin = int(request.form['vin'])
@@ -198,6 +198,18 @@ def addVehicle():
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
     return render_template('addvehicle.html', msg=msg)
+
+@app.route('/trucktracker/vehicles/vehicle-profile', methods=['GET', 'POST'])
+def vehicleProfile():
+    print(request.form)
+    if request.method == 'POST' and 'selected' in request.form:
+        vehicleID = request.form['selected']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % vehicleID)
+        vehicle = cursor.fetchone()
+        return render_template('vehicleprofile.html', vehicle=vehicle)
+    else:
+        return render_template('vehicles.html', msg="Please select a vehicle!")
 
 if __name__ == '__main__':
     app.run()
