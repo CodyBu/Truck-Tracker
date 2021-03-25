@@ -201,7 +201,6 @@ def addVehicle():
 
 @app.route('/trucktracker/vehicles/vehicle-profile', methods=['GET', 'POST'])
 def vehicleProfile():
-    print(request.form)
     if request.method == 'POST' and 'selected' in request.form:
         vehicleID = request.form['selected']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)

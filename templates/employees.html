@@ -14,11 +14,7 @@
         </tr>
         {% for user in employeeList %}
         <tr>
-            <td>
-                <a href="{{ url_for('profile') }}">
-                    {{ user.UserName }}
-                </a>
-            </td>
+            <td>{{ user.UserName }}</td>
             <td>{{ user.FirstName }}</td>
             <td>{{ user.LastName }}</td>
             <td>{{ user.UserType }}</td>
