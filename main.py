@@ -3,6 +3,7 @@ from flask_mysqldb import MySQL
 import MySQLdb.cursors
 from hashlib import sha256
 import re
+from datetime import date
 
 app = Flask(__name__)
 
@@ -203,12 +204,57 @@ def addVehicle():
 def vehicleProfile():
     if request.method == 'POST' and 'selected' in request.form:
         vehicleID = request.form['selected']
+        session['VehicleID'] = vehicleID
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % vehicleID)
         vehicle = cursor.fetchone()
-        return render_template('vehicleprofile.html', vehicle=vehicle)
+        cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\"' % vehicleID)
+        entries = cursor.fetchall()
+        return render_template('vehicleprofile.html', vehicle=vehicle, entries=entries)
     else:
         return render_template('vehicles.html', msg="Please select a vehicle!")
+
+@app.route('/trucktracker/add-entry', methods=['GET', 'POST'])
+def addEntry():
+    # Output message if something goes wrong...
+    msg = ''
+    # Check if "username", "password" POST requests exist (user submitted form)
+    if request.method == 'POST':
+        if ('mileage' and 'entrydate') in request.form:
+            # Create variables for easy access
+            mileage = int(request.form['mileage'])
+            entryDate = request.form['entrydate']
+
+            # Check if account exists using MySQL
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            # Account doesnt exists and the form data is valid, now insert new account into accounts table
+            cursor.execute('INSERT INTO MAINTENANCE_ENTRY (Vehicle, EntryDate, MileageAtTime, Requester) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (session['VehicleID'], entryDate, mileage, session['UserName']))
+            mysql.connection.commit()
+            msg = 'Entry Added!'
+        if 'note' in request.form:
+            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+            cursor.execute('SELECT EntryID FROM MAINTENANCE_ENTRY')
+            # Create variables for easy access
+            noteText = request.form['note']
+            entry = len(cursor.fetchall())
+
+            # Account doesnt exists and the form data is valid, now insert new account into accounts table
+            cursor.execute(
+                'INSERT INTO NOTE (NoteText, NoteDate, Entry, User) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (
+                noteText, date.today(), entry, session['UserName']))
+            mysql.connection.commit()
+    return render_template('addentry.html', msg=msg)
+
+@app.route('/trucktracker/vehicles/view-entry', methods=['GET', 'POST'])
+def viewEntry():
+    if request.method == 'POST' and 'selected' in request.form:
+        entryID = int(request.form['selected'])
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE EntryID = %d' % entryID)
+        entry = cursor.fetchone()
+        return render_template('viewentry.html', entry=entry)
+    else:
+        return render_template('vehicleprofile.html', msg="Please select a vehicle!")
 
 if __name__ == '__main__':
     app.run()

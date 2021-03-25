@@ -1,0 +1,20 @@
+{% extends 'layout.html' %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h2>Entry Page</h2>
+<div>
+    <p>Entry details are below:</p>
+    <table>
+        <tr>
+            <td>Entry Date:</td>
+            <td>{{ entry.EntryDate }}</td>
+        </tr>
+        <tr>
+            <td>Mileage:</td>
+            <td>{{ entry.MileageAtTime }}</td>
+        </tr>
+    </table>
+</div>
+{% endblock %}

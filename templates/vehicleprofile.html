@@ -21,4 +21,26 @@
         </tr>
     </table>
 </div>
+<div>
+    <form action="{{ url_for('viewEntry') }}" method="post">
+        <table>
+            <tr>
+                <th></th>
+                <th>Date</th>
+                <th>Mileage</th>
+            </tr>
+            {% for entry in entries %}
+            <tr>
+                <td><input type="radio" name="selected" value="{{ entry.EntryID }}" id="{{ entry.EntryID }}"></td>
+                <td>{{ entry.EntryDate }}</td>
+                <td>{{ entry.MileageAtTime }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <input type="submit" value="View Entry">
+    </form>
+    <form action="{{ url_for('addEntry') }}" method="post">
+        <input type="submit" value="Add Entry">
+    </form>
+</div>
 {% endblock %}
