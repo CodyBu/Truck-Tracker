@@ -2,7 +2,6 @@ from flask import Flask, render_template, request, redirect, url_for, session
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 from hashlib import sha256
-import re
 from datetime import date
 
 app = Flask(__name__)
@@ -60,10 +59,54 @@ def logout():
    # Redirect to login page
     return redirect(url_for('login'))
 
+# http://localhost:5000/pythinlogin/admin - this will be the admin home page, only accessible for logged in admins
+@app.route('/admin')
+def admin():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('admin.html', username=session['UserName'])
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
 
+# http://localhost:5000/pythinlogin/driver - this will be the driver home page, only accessible for logged in drivers
+@app.route('/driver')
+def driver():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('driver.html', username=session['UserName'])
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
+# http://localhost:5000/pythinlogin/mechanic - this will be the mechanic home page, only accessible for logged in mechanics
+@app.route('/mechanic')
+def mechanic():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('mechanic.html', username=session['UserName'])
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
+# http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
+@app.route('/profile')
+def viewProfile():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # We need all the account info for the user so we can display it on the profile page
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM USER WHERE UserName = \"%s\"" % session['UserName'])
+        account = cursor.fetchone()
+        # Show the profile page with account info
+        return render_template('profile.html', account=account)
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
+#Employee Section
 # http://localhost:5000/Falsk/register - this will be the registration page, we need to use both GET and POST requests
-@app.route('/register', methods=['GET', 'POST'])
-def register():
+@app.route('/employees/add-employee', methods=['GET', 'POST'])
+def addEmployee():
     # Output message if something goes wrong...
     msg = ''
     # Check if "username", "password" POST requests exist (user submitted form)
@@ -82,69 +125,16 @@ def register():
         # If account exists show error and validation checks
         if account:
             msg = 'Account already exists!'
-        elif not re.match(r'[A-Za-z0-9]+', username):
-            msg = 'Username must contain only characters and numbers!'
-        elif not username or not hashPassword:
-            msg = 'Please fill out the form!'
         else:
         # Account doesnt exists and the form data is valid, now insert new account into accounts table
             cursor.execute('INSERT INTO USER (UserName, FirstName, LastName, HashPwd, UserType) VALUES ( \"%s\", \"%s\", \"%s\", \"%s\", \"%s\")' % (username, firstname, lastname, hashPassword, usertype))
             mysql.connection.commit()
             msg = 'Employee Added!'
-
-    elif request.method == 'POST':
-        # Form is empty... (no POST data)
-        msg = 'Please fill out the form!'
     # Show registration form with message (if any)
-    return render_template('register.html', msg=msg)
+    return render_template('add-employee.html', msg=msg)
 
-
-# http://localhost:5000/pythinlogin/admin - this will be the admin home page, only accessible for logged in admins
-@app.route('/trucktracker/admin')
-def admin():
-    # Check if user is loggedin
-    if 'loggedin' in session:
-        # User is loggedin show them the home page
-        return render_template('admin.html', username=session['UserName'])
-    # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
-
-# http://localhost:5000/pythinlogin/driver - this will be the driver home page, only accessible for logged in drivers
-@app.route('/trucktracker/driver')
-def driver():
-    # Check if user is loggedin
-    if 'loggedin' in session:
-        # User is loggedin show them the home page
-        return render_template('driver.html', username=session['UserName'])
-    # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
-
-# http://localhost:5000/pythinlogin/mechanic - this will be the mechanic home page, only accessible for logged in mechanics
-@app.route('/trucktracker/mechanic')
-def mechanic():
-    # Check if user is loggedin
-    if 'loggedin' in session:
-        # User is loggedin show them the home page
-        return render_template('mechanic.html', username=session['UserName'])
-    # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
-
-# http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
-@app.route('/trucktracker/profile')
-def profile():
-    # Check if user is loggedin
-    if 'loggedin' in session:
-        # We need all the account info for the user so we can display it on the profile page
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM USER WHERE UserName = \"%s\"" % session['UserName'])
-        account = cursor.fetchone()
-        # Show the profile page with account info
-        return render_template('profile.html', account=account)
-    # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
-
-@app.route('/trucktracker/employees')
-def employees():
+@app.route('/employees')
+def viewEmployees():
     if 'loggedin' in session:
         # We need all the account info for the user so we can display it on the profile page
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -155,19 +145,8 @@ def employees():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
-@app.route('/trucktracker/vehicles')
-def vehicles():
-    if 'loggedin' in session:
-        # We need all the vehicle info to display
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute("SELECT * FROM VEHICLE")
-        vehicleList = cursor.fetchall()
-        # Show list of vehicles
-        return render_template('vehicles.html', vehicleList=vehicleList)
-    # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
-
-@app.route('/trucktracker/vehicle-registration', methods=['GET', 'POST'])
+#Vehicle Section
+@app.route('/vehicles/add-vehicle', methods=['GET', 'POST'])
 def addVehicle():
     # Output message if something goes wrong...
     msg = ''
@@ -198,9 +177,21 @@ def addVehicle():
         # Form is empty... (no POST data)
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
-    return render_template('addvehicle.html', msg=msg)
+    return render_template('add-vehicle.html', msg=msg)
 
-@app.route('/trucktracker/vehicles/vehicle-profile', methods=['GET', 'POST'])
+@app.route('/vehicles')
+def viewVehicles():
+    if 'loggedin' in session:
+        # We need all the vehicle info to display
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute("SELECT * FROM VEHICLE")
+        vehicleList = cursor.fetchall()
+        # Show list of vehicles
+        return render_template('vehicles.html', vehicleList=vehicleList)
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
+@app.route('/vehicles/vehicle-profile', methods=['GET', 'POST'])
 def vehicleProfile():
     if request.method == 'POST' and 'selected' in request.form:
         vehicleID = request.form['selected']
@@ -210,11 +201,12 @@ def vehicleProfile():
         vehicle = cursor.fetchone()
         cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\"' % vehicleID)
         entries = cursor.fetchall()
-        return render_template('vehicleprofile.html', vehicle=vehicle, entries=entries)
+        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries)
     else:
         return render_template('vehicles.html', msg="Please select a vehicle!")
 
-@app.route('/trucktracker/add-entry', methods=['GET', 'POST'])
+#Entry Section
+@app.route('/vehicles/add-entry', methods=['GET', 'POST'])
 def addEntry():
     # Output message if something goes wrong...
     msg = ''
@@ -225,36 +217,54 @@ def addEntry():
             mileage = int(request.form['mileage'])
             entryDate = request.form['entrydate']
 
-            # Check if account exists using MySQL
             cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            # Account doesnt exists and the form data is valid, now insert new account into accounts table
             cursor.execute('INSERT INTO MAINTENANCE_ENTRY (Vehicle, EntryDate, MileageAtTime, Requester) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (session['VehicleID'], entryDate, mileage, session['UserName']))
             mysql.connection.commit()
+            if 'note' in request.form:
+                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+                cursor.execute('SELECT EntryID FROM MAINTENANCE_ENTRY')
+                # Create variables for easy access
+                noteText = request.form['note']
+                entry = len(cursor.fetchall())
+
+                cursor.execute(
+                    'INSERT INTO NOTE (NoteText, NoteDate, Entry, User) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (
+                    noteText, date.today(), entry, session['UserName']))
+                mysql.connection.commit()
             msg = 'Entry Added!'
-        if 'note' in request.form:
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('SELECT EntryID FROM MAINTENANCE_ENTRY')
-            # Create variables for easy access
-            noteText = request.form['note']
-            entry = len(cursor.fetchall())
+    return render_template('add-entry.html', msg=msg)
 
-            # Account doesnt exists and the form data is valid, now insert new account into accounts table
-            cursor.execute(
-                'INSERT INTO NOTE (NoteText, NoteDate, Entry, User) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (
-                noteText, date.today(), entry, session['UserName']))
-            mysql.connection.commit()
-    return render_template('addentry.html', msg=msg)
-
-@app.route('/trucktracker/vehicles/view-entry', methods=['GET', 'POST'])
+@app.route('/vehicles/view-entry', methods=['GET', 'POST'])
 def viewEntry():
     if request.method == 'POST' and 'selected' in request.form:
         entryID = int(request.form['selected'])
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE EntryID = %d' % entryID)
         entry = cursor.fetchone()
-        return render_template('viewentry.html', entry=entry)
+        return render_template('entry-profile.html', entry=entry)
     else:
-        return render_template('vehicleprofile.html', msg="Please select a vehicle!")
+        return render_template('vehicle-profile.html', msg="Please select a vehicle!")
+
+#Note Section
+@app.route('/notes/add-note', methods=['GET', 'POST'])
+def addNote():
+    msg=''
+    if request.method == 'POST' and 'note' in request.form:
+        noteText = request.form['note']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('INSERT INTO NOTE (NoteText, NoteDate, User) VALUES ( \"%s\", \"%s\", \"%s\")' % (
+                    noteText, date.today(), session['UserName']))
+        mysql.connection.commit()
+        msg = 'Note Added!'
+        return render_template('add-note.html', msg=msg)
+    return render_template('add-note.html', msg=msg)
+
+@app.route('/notes')
+def viewNotes():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM NOTE WHERE Entry IS NULL')
+    noteList = cursor.fetchall()
+    return render_template('notes.html', noteList=noteList)
 
 if __name__ == '__main__':
     app.run()
