@@ -51,15 +51,35 @@ def login():
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
 
-@app.route('/logout')
-def logout():
-    # Remove session data, this will log the user out
-    session.pop('loggedin', None)
-    session.pop('id', None)
-    session.pop('UserName', None)
-   # Redirect to login page
+# http://localhost:5000/pythinlogin/admin - this will be the admin home page, only accessible for logged in admins
+@app.route('/trucktracker/admin')
+def admin():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('admin.html', username=session['UserName'])
+    # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+# http://localhost:5000/pythinlogin/driver - this will be the driver home page, only accessible for logged in drivers
+@app.route('/trucktracker/driver')
+def driver():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('driver.html', username=session['UserName'])
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
+
+# http://localhost:5000/pythinlogin/mechanic - this will be the mechanic home page, only accessible for logged in mechanics
+@app.route('/trucktracker/mechanic')
+def mechanic():
+    # Check if user is loggedin
+    if 'loggedin' in session:
+        # User is loggedin show them the home page
+        return render_template('mechanic.html', username=session['UserName'])
+    # User is not loggedin redirect to login page
+    return redirect(url_for('login'))
 
 # http://localhost:5000/Falsk/register - this will be the registration page, we need to use both GET and POST requests
 @app.route('/register', methods=['GET', 'POST'])
@@ -99,35 +119,16 @@ def register():
     return render_template('register.html', msg=msg)
 
 
-# http://localhost:5000/pythinlogin/admin - this will be the admin home page, only accessible for logged in admins
-@app.route('/trucktracker/admin')
-def admin():
-    # Check if user is loggedin
-    if 'loggedin' in session:
-        # User is loggedin show them the home page
-        return render_template('admin.html', username=session['UserName'])
-    # User is not loggedin redirect to login page
+@app.route('/logout')
+def logout():
+    # Remove session data, this will log the user out
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('UserName', None)
+   # Redirect to login page
     return redirect(url_for('login'))
 
-# http://localhost:5000/pythinlogin/driver - this will be the driver home page, only accessible for logged in drivers
-@app.route('/trucktracker/driver')
-def driver():
-    # Check if user is loggedin
-    if 'loggedin' in session:
-        # User is loggedin show them the home page
-        return render_template('driver.html', username=session['UserName'])
-    # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
-
-# http://localhost:5000/pythinlogin/mechanic - this will be the mechanic home page, only accessible for logged in mechanics
-@app.route('/trucktracker/mechanic')
-def mechanic():
-    # Check if user is loggedin
-    if 'loggedin' in session:
-        # User is loggedin show them the home page
-        return render_template('mechanic.html', username=session['UserName'])
-    # User is not loggedin redirect to login page
-    return redirect(url_for('login'))
+# EMPLOYEE SECTION:
 
 # http://localhost:5000/pythinlogin/profile - this will be the profile page, only accessible for loggedin users
 @app.route('/trucktracker/profile')
@@ -154,6 +155,8 @@ def employees():
         return render_template('employees.html', employeeList=employeeList)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
+
+# VEHICLE SECTION:
 
 @app.route('/trucktracker/vehicles')
 def vehicles():
@@ -213,6 +216,8 @@ def vehicleProfile():
         return render_template('vehicleprofile.html', vehicle=vehicle, entries=entries)
     else:
         return render_template('vehicles.html', msg="Please select a vehicle!")
+
+# ENTRY SECTION
 
 @app.route('/trucktracker/add-entry', methods=['GET', 'POST'])
 def addEntry():
