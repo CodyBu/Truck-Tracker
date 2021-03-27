@@ -99,7 +99,7 @@ def register():
         # Form is empty... (no POST data)
         msg = 'Please fill out the form!'
     # Show registration form with message (if any)
-    return render_template('register.html', msg=msg)
+    return render_template('add-employee.html', msg=msg)
 
 
 # http://localhost:5000/pythinlogin/home - this will be the home page, only accessible for loggedin users

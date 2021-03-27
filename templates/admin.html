@@ -6,9 +6,9 @@
 
 <h2>ADMIN PAGE</h2>
 <p>Welcome to TRUCK TRACKER</p>
-<div> <a href=""><i class="fas fa-sticky-note"></i>Notes</a></div>
-<div> <a href="{{ url_for('employees') }}"><i class="fas fa-users"></i>Employees</a></div>
-<div> <a href="{{ url_for('vehicles') }}"><i class="fas fa-truck"></i>Truck/Trailer List</a></div>
+<div> <a href="{{ url_for('viewNotes') }}"><i class="fas fa-sticky-note"></i>Notes</a></div>
+<div> <a href="{{ url_for('viewEmployees') }}"><i class="fas fa-users"></i>Employees</a></div>
+<div> <a href="{{ url_for('viewVehicles') }}"><i class="fas fa-truck"></i>Truck/Trailer List</a></div>
 <div> <a href=""><i class="fas fa-tools"></i>Services</a></div>
 
 {% endblock %}

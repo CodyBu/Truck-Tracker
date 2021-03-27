@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block title %}Notes{% endblock %}
+
+{% block content %}
+<h2>NOTE PAGE</h2>
+<div>
+    {% for note in noteList %}
+    <h3>{{ note.NoteDate }} {{ note.User }}</h3>
+    <p>{{ note.NoteText }}</p>
+    {% endfor %}
+</div>
+<div><a href="{{ url_for('addNote') }}"><i class="fas fa-truck"></i>Add Note</a></div>
+{% endblock %}
