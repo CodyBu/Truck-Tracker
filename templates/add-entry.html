@@ -19,6 +19,14 @@
 					<i class="fas fa-lock"></i>
 				</label>
 				<input type="date" name="entrydate" placeholder="Date of Entry" id="entrydate" required>
+				<label for="services">
+					<i class="fas fa-lock"></i>
+				</label>
+				<select name="services" id="services" multiple>
+					{% for service in serviceList %}
+					<option value="{{ service.ServiceName }}">{{ service.ServiceName }}</option>
+					{% endfor %}
+				</select>
 				<label for="note">
 					<i class="fas fa-lock"></i>
 				</label>

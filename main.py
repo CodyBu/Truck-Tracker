@@ -210,29 +210,34 @@ def vehicleProfile():
 def addEntry():
     # Output message if something goes wrong...
     msg = ''
-    # Check if "username", "password" POST requests exist (user submitted form)
-    if request.method == 'POST':
-        if ('mileage' and 'entrydate') in request.form:
-            # Create variables for easy access
-            mileage = int(request.form['mileage'])
-            entryDate = request.form['entrydate']
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    if request.method == 'POST' and ('mileage' and 'entrydate') in request.form:
+        # Create variables for easy access
+        mileage = int(request.form['mileage'])
+        entryDate = request.form['entrydate']
+        cursor.execute('SELECT COUNT(EntryID) FROM MAINTENANCE_ENTRY')
+        entryID = cursor.fetchone()['COUNT(EntryID)']+1
+        selected = request.form.getlist('services')
 
-            cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-            cursor.execute('INSERT INTO MAINTENANCE_ENTRY (Vehicle, EntryDate, MileageAtTime, Requester) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (session['VehicleID'], entryDate, mileage, session['UserName']))
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('INSERT INTO MAINTENANCE_ENTRY (Vehicle, EntryDate, MileageAtTime, Requester) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (session['VehicleID'], entryDate, mileage, session['UserName']))
+        mysql.connection.commit()
+
+        for service in selected:
+            cursor.execute('INSERT INTO SERVICE_JUNCTION (Entry, Service) VALUES ( %d, \"%s\")' % (entryID, service))
             mysql.connection.commit()
-            if 'note' in request.form:
-                cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-                cursor.execute('SELECT EntryID FROM MAINTENANCE_ENTRY')
-                # Create variables for easy access
-                noteText = request.form['note']
-                entry = len(cursor.fetchall())
 
-                cursor.execute(
-                    'INSERT INTO NOTE (NoteText, NoteDate, Entry, User) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (
-                    noteText, date.today(), entry, session['UserName']))
-                mysql.connection.commit()
-            msg = 'Entry Added!'
-    return render_template('add-entry.html', msg=msg)
+        if 'note' in request.form:
+            # Create variables for easy access
+            noteText = request.form['note']
+            cursor.execute(
+                'INSERT INTO NOTE (NoteText, NoteDate, Entry, User) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (
+                noteText, date.today(), entryID, session['UserName']))
+            mysql.connection.commit()
+        msg = 'Entry Added!'
+    cursor.execute('SELECT ServiceName FROM Service')
+    serviceList = cursor.fetchall()
+    return render_template('add-entry.html', msg=msg, serviceList=serviceList)
 
 @app.route('/vehicles/view-entry', methods=['GET', 'POST'])
 def viewEntry():
@@ -265,6 +270,38 @@ def viewNotes():
     cursor.execute('SELECT * FROM NOTE WHERE Entry IS NULL')
     noteList = cursor.fetchall()
     return render_template('notes.html', noteList=noteList)
+
+#Service Section
+@app.route('/services/add-service', methods=['GET', 'POST'])
+def addService():
+    msg=''
+    if request.method == 'POST' and 'name' in request.form:
+        service = request.form['name']
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT * FROM SERVICE WHERE ServiceName = \"%s\"' % service)
+        result = cursor.fetchall()
+        if len(result) > 0:
+            msg = 'Service already exists'
+            return render_template('add-service.html', msg=msg)
+        if 'description' in request.form:
+            description = request.form['description']
+            cursor.execute('INSERT INTO SERVICE (ServiceName, ServiceDescription) VALUES ( \"%s\", \"%s\")' % (service, description))
+            mysql.connection.commit()
+            msg = 'Service Added!'
+            return render_template('add-service.html', msg=msg)
+        else:
+            cursor.execute('INSERT INTO SERVICE (ServiceName) VALUES ( \"%s\")' % service)
+            mysql.connection.commit()
+            msg = 'Service Added!'
+            return render_template('add-service.html', msg=msg)
+    return render_template('add-service.html', msg=msg)
+
+@app.route('/services')
+def viewServices():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('SELECT * FROM SERVICE')
+    serviceList = cursor.fetchall()
+    return render_template('services.html', serviceList=serviceList)
 
 if __name__ == '__main__':
     app.run()

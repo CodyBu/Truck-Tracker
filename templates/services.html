@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block title %}Services{% endblock %}
+
+{% block content %}
+<h2>SERVICES PAGE</h2>
+<div>
+    <table>
+        <tr>
+            <th>Service</th>
+            <th>Description</th>
+        </tr>
+        {% for service in serviceList %}
+        <tr>
+            <td>{{ service.ServiceName }}</td>
+            <td>{{ service.ServiceDescription }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div> <a href="{{ url_for('addService') }}"><i class="fas fa-user"></i>Add Service</a></div>
+{% endblock %}
