@@ -99,7 +99,7 @@ def viewProfile():
         cursor.execute("SELECT * FROM USER WHERE UserName = \"%s\"" % session['UserName'])
         account = cursor.fetchone()
         # Show the profile page with account info
-        return render_template('profile.html', account=account)
+        return render_template('employee-profile.html', account=account)
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
@@ -179,6 +179,13 @@ def addVehicle():
     # Show registration form with message (if any)
     return render_template('add-vehicle.html', msg=msg)
 
+@app.route('/vehicles/delete')
+def deleteVehicle():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute('DELETE FROM VEHICLE WHERE VehicleID = \"%s\"' % session['VehicleID'])
+    mysql.connection.commit()
+    return redirect(url_for('viewVehicles'))
+
 @app.route('/vehicles')
 def viewVehicles():
     if 'loggedin' in session:
@@ -203,7 +210,7 @@ def vehicleProfile():
         entries = cursor.fetchall()
         return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries)
     else:
-        return render_template('vehicles.html', msg="Please select a vehicle!")
+        return redirect(url_for('viewVehicles'))
 
 #Entry Section
 @app.route('/vehicles/add-entry', methods=['GET', 'POST'])
@@ -215,13 +222,13 @@ def addEntry():
         # Create variables for easy access
         mileage = int(request.form['mileage'])
         entryDate = request.form['entrydate']
-        cursor.execute('SELECT COUNT(EntryID) FROM MAINTENANCE_ENTRY')
-        entryID = cursor.fetchone()['COUNT(EntryID)']+1
         selected = request.form.getlist('services')
 
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('INSERT INTO MAINTENANCE_ENTRY (Vehicle, EntryDate, MileageAtTime, Requester) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (session['VehicleID'], entryDate, mileage, session['UserName']))
         mysql.connection.commit()
+        cursor.execute('SELECT LAST_INSERT_ID()')
+        entryID = cursor.fetchone()['LAST_INSERT_ID()']
 
         for service in selected:
             cursor.execute('INSERT INTO SERVICE_JUNCTION (Entry, Service) VALUES ( %d, \"%s\")' % (entryID, service))
@@ -246,7 +253,11 @@ def viewEntry():
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE EntryID = %d' % entryID)
         entry = cursor.fetchone()
-        return render_template('entry-profile.html', entry=entry)
+        cursor.execute('SELECT * FROM NOTE WHERE Entry = %d' % entryID)
+        noteList = cursor.fetchall()
+        cursor.execute('SELECT * FROM SERVICE_JUNCTION WHERE Entry = %d' % entryID)
+        serviceList = cursor.fetchall()
+        return render_template('entry-profile.html', entry=entry, noteList=noteList, serviceList=serviceList)
     else:
         return render_template('vehicle-profile.html', msg="Please select a vehicle!")
 
@@ -261,13 +272,12 @@ def addNote():
                     noteText, date.today(), session['UserName']))
         mysql.connection.commit()
         msg = 'Note Added!'
-        return render_template('add-note.html', msg=msg)
     return render_template('add-note.html', msg=msg)
 
 @app.route('/notes')
 def viewNotes():
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute('SELECT * FROM NOTE WHERE Entry IS NULL')
+    cursor.execute('SELECT * FROM NOTE WHERE Entry IS NULL ORDER BY NoteDate DESC')
     noteList = cursor.fetchall()
     return render_template('notes.html', noteList=noteList)
 
@@ -276,24 +286,21 @@ def viewNotes():
 def addService():
     msg=''
     if request.method == 'POST' and 'name' in request.form:
-        service = request.form['name']
+        serviceName = request.form['name']
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM SERVICE WHERE ServiceName = \"%s\"' % service)
-        result = cursor.fetchall()
-        if len(result) > 0:
+        cursor.execute('SELECT * FROM SERVICE WHERE ServiceName = \"%s\"' % serviceName)
+        service = cursor.fetchone()
+        if service:
             msg = 'Service already exists'
-            return render_template('add-service.html', msg=msg)
-        if 'description' in request.form:
+        elif 'description' in request.form:
             description = request.form['description']
-            cursor.execute('INSERT INTO SERVICE (ServiceName, ServiceDescription) VALUES ( \"%s\", \"%s\")' % (service, description))
+            cursor.execute('INSERT INTO SERVICE (ServiceName, ServiceDescription) VALUES ( \"%s\", \"%s\")' % (serviceName, description))
             mysql.connection.commit()
             msg = 'Service Added!'
-            return render_template('add-service.html', msg=msg)
         else:
-            cursor.execute('INSERT INTO SERVICE (ServiceName) VALUES ( \"%s\")' % service)
+            cursor.execute('INSERT INTO SERVICE (ServiceName) VALUES ( \"%s\")' % serviceName)
             mysql.connection.commit()
             msg = 'Service Added!'
-            return render_template('add-service.html', msg=msg)
     return render_template('add-service.html', msg=msg)
 
 @app.route('/services')
@@ -304,4 +311,4 @@ def viewServices():
     return render_template('services.html', serviceList=serviceList)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
