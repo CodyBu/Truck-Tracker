@@ -26,12 +26,12 @@ def login():
     #clear any existing data in session
     session.clear()
     # Check if "username" and "password" POST requests exist (user submitted form)
-    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     if request.method == 'POST' and 'username' and 'password' in request.form:
         # Create variables for easy access
         username = request.form['username']
         hashPassword = sha256(request.form['password'].encode()).hexdigest()
         # Check if account exists using MySQL
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM USER WHERE UserName = \"%s\" AND HashPwd = \"%s\"' % (username, hashPassword))
         # Fetch one record and return result
         account = cursor.fetchone()
@@ -40,26 +40,24 @@ def login():
             # Create session data, we can access this data in other routes
             session['loggedin'] = True
             session['UserName'] = account['UserName']
-            if account['UserType'] == "Admin":
-                return redirect(url_for('admin'))
-            elif account['UserType'] == "Driver":
-                return redirect(url_for('driver'))
-            elif account['UserType'] == "Mechanic":
-                return redirect(url_for('mechanic'))
+            session['UserType'] = account['UserType']
+            return redirect(url_for('home'))
         else:
             # Account doesnt exist or username/password incorrect
             msg = 'Incorrect username/password!'
-    elif 'loggedin' in session:
-        cursor.execute('SELECT UserType FROM USER WHERE UserName = \"%s\"' % session['UserName'])
-        account = cursor.fetchone()
-        if account['UserType'] == "Admin":
-            return redirect(url_for('admin'))
-        elif account['UserType'] == "Driver":
-            return redirect(url_for('driver'))
-        elif account['UserType'] == "Mechanic":
-            return redirect(url_for('mechanic'))
     # Show the login form with message (if any)
     return render_template('index.html', msg=msg)
+
+@app.route('/home')
+def home():
+    if 'loggedin' in session:
+        if session['UserType'] == "Admin":
+            return redirect(url_for('admin'))
+        elif session == "Driver":
+            return redirect(url_for('driver'))
+        elif session['UserType'] == "Mechanic":
+            return redirect(url_for('mechanic'))
+    return render_template('index.html')
 
 @app.route('/logout')
 def logout():
