@@ -3,12 +3,47 @@
 {% block title %}Notes{% endblock %}
 
 {% block content %}
-<h2>NOTE PAGE</h2>
-<div>
-    {% for note in noteList %}
-    <h3>{{ note.NoteDate }} {{ note.User }}</h3>
-    <p>{{ note.NoteText }}</p>
-    {% endfor %}
-</div>
-<div><a href="{{ url_for('addNote') }}"><i class="fas fa-truck"></i>Add Note</a></div>
+<main>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+
+      <div class="d-grid gap-2 d-md-block">
+        <div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('admin') }}"><i class="fas fa-user"></i>Back</a></div>
+      </div>
+    </header>
+    <div class="p-5 mb-4 bg-light border rounded-3 text-center container">
+    <div class="container-md py-5 d-grid gap-4">
+
+        <h2 class="fw-bold">NOTE PAGE</h2>
+
+        <form action="{{ url_for('viewNotes') }}" method="post">
+            <table class="table table-striped table-hover table-bordered table-responsive">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th scope="col">Date</th>
+                        <th scope="col">User</th>
+                        <th scope="col">Note</th>
+                    </tr>
+                </thead>
+                {% for note in noteList  %}
+                  <tbody>
+                    <tr>
+                        <td><input type="radio" name="selected" value="{{ note.noteList }}" id="{{ note.noteList }}"></td>
+                        <td>{{ note.NoteDate }}</td>
+                        <td>{{ note.User }}</td>
+                        <td>{{ note.NoteText }}</td>
+                    </tr>
+                  </tbody>
+                {% endfor %}
+            </table>
+
+        </form>
+    </div>
+        <div><a class="btn btn-primary btn-lg btn-block" href="{{ url_for('addNote') }}"><i class="fas fa-truck"></i>Add Note</a></div>
+   </div>
+
+  </div>
+
+</main>
 {% endblock %}
