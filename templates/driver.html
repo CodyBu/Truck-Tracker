@@ -4,8 +4,19 @@
 
 {% block content %}
 
-<h2>DRIVER PAGE</h2>
-<p>Welcome to TRUCK TRACKER</p>
-<div> <a href="{{ url_for('viewProfile') }}"><i class="fas fa-sticky-note"></i></a></div>
+
+<main>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+        <h2 class="display-5 fw-bold">Welcome to Truck Tracker</h2>
+        <div> <a href="{{ url_for('viewProfile') }}"><i class="fas fa-sticky-note"></i></a></div>
+    </header>
+    <div class="p-5 mb-4 bg-light border rounded-3 text-center container">
+      <div class="container-md py-5 d-grid gap-4">
+        <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('viewNotes') }}" role="button">Notes</a>
+      </div>
+    </div>
+  </div>
+</main>
 
 {% endblock %}
