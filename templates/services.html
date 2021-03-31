@@ -3,20 +3,35 @@
 {% block title %}Services{% endblock %}
 
 {% block content %}
-<h2>SERVICES PAGE</h2>
+
+	<main>
+		<div class="container py-4">
+			<header class="pb-3 mb-4 border-bottom">
+
+				<div class="d-grid gap-2 d-md-block">
+				<div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('admin') }}">Back</a></div>
+				</div>
+			</header>
+			<div class="p-5 mb-4 bg-light border rounded-3 text-center container">
+             <div class="container-md py-5 d-grid gap-4">
+    <h2 class = "fw-bold">SERVICES PAGE</h2>
 <div>
-    <table>
+    <table class = "table table-striped table-hover table-bordered table-responsive">
+        <thead>
         <tr>
-            <th>Service</th>
-            <th>Description</th>
+            <th scope = "col">Service</th>
+            <th scope = "col">Description</th>
         </tr>
+        </thead>
         {% for service in serviceList %}
+        <tbody>
         <tr>
             <td>{{ service.ServiceName }}</td>
             <td>{{ service.ServiceDescription }}</td>
         </tr>
+        </tbody>
         {% endfor %}
     </table>
 </div>
-<div> <a href="{{ url_for('addService') }}"><i class="fas fa-user"></i>Add Service</a></div>
+<div> <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('addService') }}"><i class="fas fa-user"></i>Add Service</a></div>
 {% endblock %}
