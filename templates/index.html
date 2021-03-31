@@ -1,27 +1,36 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>Login</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-	</head>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
 
-	<body>
-		<div class="login">
-			<h1>Login</h1>
-			<form action="{{ url_for('login') }}" method="post">
-				<label for="username">
-					<i class="fas fa-user"></i>
-				</label>
-				<input type="text" name="username" placeholder="Username" id="username" required>
-				<label for="password">
-					<i class="fas fa-lock"></i>
-				</label>
-				<input type="password" name="password" placeholder="Password" id="password" required>
-				<div class="msg">{{ msg }}</div>
-				<input type="submit" value="Login">
-			</form>
-		</div>
-	</body>
+    <title>Signin</title>
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='signin.css') }}">
+  </head>
+  <body class="text-center">
+
+<main class="form-signin">
+  <form  action="{{ url_for('login') }}" method="post">
+    <!--<img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">-->
+    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+    <div class="form-floating">
+      <input type="text" class="form-control" name="username" id="username" placeholder="Username" required>
+      <label for="floatingInput">Name</label>
+    </div>
+    <div class="form-floating">
+      <input type="password" class="form-control" name="password" id="password" placeholder="Password" required>
+      <label for="floatingPassword">Password</label>
+    </div>
+    <div class="msg">{{ msg }}</div>
+    <button class="w-100 btn btn-lg btn-primary" type="submit" value="Login">Sign in</button>
+
+    <p class="mt-5 mb-3 text-muted">&copy; Truck Tracker 2021–2030</p>
+  </form>
+</main>
+
+
+
+  </body>
 </html>
