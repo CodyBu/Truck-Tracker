@@ -1,47 +1,57 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
-	<head>
-		<meta charset="utf-8">
-		<title>Register</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-	</head>
-	<body>
-		<div class="register">
-			<h1>Add Vehicle</h1>
-			<form action="{{ url_for('addVehicle') }}" method="post" autocomplete="off">
-				<label for="vehicleid">
-					<i class="fas fa-truck"></i>
-				</label>
-				<input type="text" name="vehicleid" placeholder="Vehicle ID" id="vehicleid" required>
+{% extends 'layout.html' %}
 
-                <label for="vin">
-					<i class="fas fa-hashtag"></i>
-				</label>
-				<input type="text" name="vin" placeholder="VIN Number" id="vin" required>
+{% block title %}Add-Vehicle{% endblock %}
 
-				<label for="mileage">
-					<i class="fas fa-tachometer-alt"></i>
-				</label>
-				<input type="text" name="mileage" placeholder="Current Mileage" id="mileage" required>
+{% block content %}
 
-				<label for="plate">
-					<i class="fas fa-user"></i>
-				</label>
-				<input type="text" name="plate" placeholder="License Plate" id="plate" required>
+<body >
+	<div class="register">
+	<main>
+		<div class="container py-4">
+			<header class="pb-3 mb-4 border-bottom">
+				<div class="d-grid gap-2 d-md-block">
+					<div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('viewVehicles') }}">Back</a></div>
+				</div>
+			</header>
+			<div class="p-5 mb-4 bg-light border rounded-3 text-center container">
+				<div class="container-md py-5 d-grid gap-4">
+					<h2 class="fw-bold">Add Vehicle</h2>
+					<form action="{{ url_for('addVehicle') }}" method="post" autocomplete="off">
+						<div class="mb-3">
+							<input type="text" class="form-control" name="vehicleid" placeholder="Vehicle ID" id="vehicleid" pattern="[A-Za-z0-9]{1,10}" required>
+						</div>
+						<div class="mb-3">
+							<input type="text" class="form-control" name="vin" placeholder="VIN" id="vin" pattern="[A-Z0-9]{1,17}" required>
+						</div>
+						<div class="mb-3">
+							<input type="number" class="form-control" name="mileage" placeholder="Mileage" id="mileage" pattern="[1-9]{1}[-][0-9]{10}"  required>
+						</div>
+						<div class="mb-3">
+							<input type="text" class="form-control" name="plate" placeholder="License Plate" id="plate" pattern="[A-Z0-9]{1,8}" required>
+						</div>
+						<div class="custom-select">
+							<input list="types" class="form-control" name="type" id="type" placeholder="Pick a Vehicle Type" required>
+							<datalist id="types">
+								<option value="Truck">
+								<option value="Trailer">
+							</datalist>
 
-				<label for="type">
-					<i class="fas fa-truck"></i>
-				</label>
-				<input list="types" name="type" id="type" required>
-					<datalist id="types">
-						<option value="Truck">
-						<option value="Trailer">
-					</datalist>
-				</input>
-				<div class="msg">{{ msg }}</div>
-				<input type="submit" value="Add">
-			</form>
+						</div><br>
+					<div class="msg">{{ msg }}</div>
+
+					<input class="btn btn-primary btn-lg btn-block" type="submit" value="Add Vehicle">
+					</form>
+				</div>
+			</div>
+
+			<footer class="pt-3 mt-4 text-muted border-top">
+				&copy; Truck Tracker 2021-2030
+			</footer>
 		</div>
-	</body>
-</html>
+	</main>
+	</div>
+</body>
+
+
+
+{% endblock %}
