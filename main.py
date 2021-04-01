@@ -110,6 +110,44 @@ def viewProfile():
     # User is not loggedin redirect to login page
     return redirect(url_for('login'))
 
+@app.route('/profile/update-profile', methods=['POST', 'GET'])
+def updateProfile():
+    msg = ''
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    #check if post method exists
+    if request.method == 'POST' and ('first' and 'last') in request.form:
+        firstName = request.form['first']
+        lastName = request.form['last']
+        cursor.execute('UPDATE User SET FirstName = \"%s\", LastName = \"%s\" WHERE UserName = \"%s\"' % (firstName, lastName, session['UserName']))
+        mysql.connection.commit()
+        msg='Profile Updated!'
+    cursor.execute('SELECT FirstName, LastName FROM USER WHERE UserName = \"%s\"' % session['UserName'])
+    names = cursor.fetchone()
+    return render_template('update-profile.html', names=names, msg=msg)
+
+@app.route('/profile/update-password', methods=['POST', 'GET'])
+def updatePassword():
+    msg=''
+    if request.method == 'POST' and ('old' and 'new' and 'confirm') in request.form:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        cursor.execute('SELECT HashPwd FROM User WHERE UserName = \"%s\"' % session['UserName'])
+        actualPassword = cursor.fetchone()['HashPwd']
+        oldHashPassword = sha256(request.form['old'].encode()).hexdigest()
+        if oldHashPassword != actualPassword:
+            msg = 'Your entered the wrong password'
+            return render_template('update-password.html', msg=msg)
+        newPassword = request.form['new']
+        confirmPassword = request.form['confirm']
+        if newPassword != confirmPassword:
+            msg = 'Passwords do not match'
+            return render_template('update-password.html', msg=msg)
+        newHashPassword = sha256(newPassword.encode()).hexdigest()
+        cursor.execute('UPDATE User SET HashPwd = \"%s\" WHERE UserName = \"%s\"' % (newHashPassword, session['UserName']))
+        mysql.connection.commit()
+        msg = "Password updated successfully!"
+    return render_template('update-password.html', msg=msg)
+
+
 #Employee Section
 # http://localhost:5000/Falsk/register - this will be the registration page, we need to use both GET and POST requests
 @app.route('/employees/add-employee', methods=['GET', 'POST'])
@@ -139,6 +177,19 @@ def addEmployee():
             msg = 'Employee Added!'
     # Show registration form with message (if any)
     return render_template('add-employee.html', msg=msg)
+
+@app.route('/employees/delete-employee', methods=['GET', 'POST'])
+def deleteEmployee():
+    print("delete is called")
+    if request.method == 'POST' and 'selected' in request.form:
+        print("this is called")
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        user = request.form['selected']
+        if session['UserType'] == 'Admin':
+            print("this is also called")
+            cursor.execute('DELETE FROM USER WHERE UserName = \"%s\"' % user)
+            mysql.connection.commit()
+    return redirect(url_for('viewEmployees'))
 
 @app.route('/employees')
 def viewEmployees():
@@ -207,13 +258,19 @@ def viewVehicles():
 
 @app.route('/vehicles/vehicle-profile', methods=['GET', 'POST'])
 def vehicleProfile():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     if request.method == 'POST' and 'selected' in request.form:
         vehicleID = request.form['selected']
         session['VehicleID'] = vehicleID
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % vehicleID)
         vehicle = cursor.fetchone()
         cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\"' % vehicleID)
+        entries = cursor.fetchall()
+        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'])
+    elif 'VehicleID' in session:
+        cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % session['VehicleID'])
+        vehicle = cursor.fetchone()
+        cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\"' % session['VehicleID'])
         entries = cursor.fetchall()
         return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'])
     else:
@@ -256,6 +313,7 @@ def addEntry():
 @app.route('/vehicles/view-entry', methods=['GET', 'POST'])
 def viewEntry():
     if request.method == 'POST' and 'selected' in request.form:
+        print("This was called")
         entryID = int(request.form['selected'])
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE EntryID = %d' % entryID)
@@ -265,8 +323,7 @@ def viewEntry():
         cursor.execute('SELECT * FROM SERVICE_JUNCTION WHERE Entry = %d' % entryID)
         serviceList = cursor.fetchall()
         return render_template('entry-profile.html', entry=entry, noteList=noteList, serviceList=serviceList)
-    else:
-        return render_template('vehicle-profile.html', msg="Please select a vehicle!")
+    return redirect(url_for('vehicleProfile'))
 
 #Note Section
 @app.route('/notes/add-note', methods=['GET', 'POST'])
@@ -283,6 +340,7 @@ def addNote():
 
 @app.route('/notes/delete', methods=['GET', 'POST'])
 def deleteNote():
+    msg=''
     if request.method == 'POST' and 'selected' in request.form:
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         noteID = int(request.form['selected'])
@@ -293,15 +351,18 @@ def deleteNote():
             cursor.execute('DELETE FROM Note WHERE NoteID = %d' % noteID)
             mysql.connection.commit()
         else:
-            print("You are not permitted to delete this note")
-    return redirect(url_for('viewNotes'))
+            msg="You are not permitted to delete this note"
+    return redirect(url_for('viewNotes', msg=msg))
 
 @app.route('/notes')
 def viewNotes():
+    msg = request.args.get('msg')
+    if msg is None:
+        msg=''
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute('SELECT * FROM NOTE WHERE Entry IS NULL ORDER BY NoteDate DESC')
     noteList = cursor.fetchall()
-    return render_template('notes.html', noteList=noteList)
+    return render_template('notes.html', noteList=noteList, msg=msg)
 
 #Service Section
 @app.route('/services/add-service', methods=['GET', 'POST'])
