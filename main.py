@@ -53,7 +53,7 @@ def home():
     if 'loggedin' in session:
         if session['UserType'] == "Admin":
             return redirect(url_for('admin'))
-        elif session == "Driver":
+        elif session['UserType'] == "Driver":
             return redirect(url_for('driver'))
         elif session['UserType'] == "Mechanic":
             return redirect(url_for('mechanic'))
@@ -280,6 +280,21 @@ def addNote():
         mysql.connection.commit()
         msg = 'Note Added!'
     return render_template('add-note.html', msg=msg)
+
+@app.route('/notes/delete', methods=['GET', 'POST'])
+def deleteNote():
+    if request.method == 'POST' and 'selected' in request.form:
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        noteID = int(request.form['selected'])
+        cursor.execute('SELECT * FROM NOTE WHERE NoteID = %d' % noteID)
+        note = cursor.fetchone()
+        user = note['User']
+        if session['UserType'] == 'Admin' or user == session['UserName']:
+            cursor.execute('DELETE FROM Note WHERE NoteID = %d' % noteID)
+            mysql.connection.commit()
+        else:
+            print("You are not permitted to delete this note")
+    return redirect(url_for('viewNotes'))
 
 @app.route('/notes')
 def viewNotes():
