@@ -215,7 +215,7 @@ def vehicleProfile():
         vehicle = cursor.fetchone()
         cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\"' % vehicleID)
         entries = cursor.fetchall()
-        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries)
+        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'])
     else:
         return redirect(url_for('viewVehicles'))
 
@@ -333,4 +333,4 @@ def viewServices():
     return render_template('services.html', serviceList=serviceList)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0')

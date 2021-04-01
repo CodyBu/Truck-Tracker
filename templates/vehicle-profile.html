@@ -34,9 +34,11 @@
             </tr>
           </tbody>
         </table>
+        {% if type == 'Admin' %}
         <div class="d-grid gap-2 d-md-block">
           <a class="btn btn-danger btn-sm btn-block" href="{{ url_for('deleteVehicle') }}" role="button" onclick="return confirm('Are you sure you want to delete this vehicle?')">Delete Vehicle</a>
         </div>
+        {% endif %}
       </div>
     </div>
 
