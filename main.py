@@ -180,13 +180,10 @@ def addEmployee():
 
 @app.route('/employees/delete-employee', methods=['GET', 'POST'])
 def deleteEmployee():
-    print("delete is called")
     if request.method == 'POST' and 'selected' in request.form:
-        print("this is called")
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         user = request.form['selected']
         if session['UserType'] == 'Admin':
-            print("this is also called")
             cursor.execute('DELETE FROM USER WHERE UserName = \"%s\"' % user)
             mysql.connection.commit()
     return redirect(url_for('viewEmployees'))
@@ -313,7 +310,6 @@ def addEntry():
 @app.route('/vehicles/view-entry', methods=['GET', 'POST'])
 def viewEntry():
     if request.method == 'POST' and 'selected' in request.form:
-        print("This was called")
         entryID = int(request.form['selected'])
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE EntryID = %d' % entryID)
