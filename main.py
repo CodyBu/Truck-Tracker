@@ -262,8 +262,10 @@ def vehicleProfile():
         cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % vehicleID)
         vehicle = cursor.fetchone()
         cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\"' % vehicleID)
-        entries = cursor.fetchall()
-        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'])
+        entries = cursor.fetchall()        
+        cursor.execute('SELECT * FROM SERVICE_JUNCTION')
+        serviceList = cursor.fetchall()  
+        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'], serviceList = serviceList)
     elif 'VehicleID' in session:
         cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % session['VehicleID'])
         vehicle = cursor.fetchone()
@@ -316,7 +318,7 @@ def viewEntry():
         entry = cursor.fetchone()
         cursor.execute('SELECT * FROM NOTE WHERE Entry = %d' % entryID)
         noteList = cursor.fetchall()
-        cursor.execute('SELECT * FROM SERVICE_JUNCTION WHERE Entry = %d' % entryID)
+        cursor.execute('SELECT * FROM SERVICE_JUNCTION , MAINTENANCE_ENTRY WHERE SERVICE_JUNCTION.Entry = MAINTENANCE_ENTRY.EntryID' % entryID)
         serviceList = cursor.fetchall()
         return render_template('entry-profile.html', entry=entry, noteList=noteList, serviceList=serviceList)
     return redirect(url_for('vehicleProfile'))
@@ -390,4 +392,4 @@ def viewServices():
     return render_template('services.html', serviceList=serviceList)
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True)
