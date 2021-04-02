@@ -18,7 +18,7 @@
 					<h2 class="fw-bold">Add Vehicle</h2>
 					<form action="{{ url_for('addVehicle') }}" method="post" autocomplete="off">
 						<div class="mb-3">
-							<input type="text" class="form-control" name="vehicleid" placeholder="Vehicle ID" id="vehicleid" pattern="[A-Za-z0-9]{1,10}" required>
+							<input type="text" class="form-control" name="vehicleid" placeholder="Vehicle ID" id="vehicleid" pattern="[A-Za-z0-9 ]{1,10}" required>
 						</div>
 						<div class="mb-3">
 							<input type="text" class="form-control" name="vin" placeholder="VIN" id="vin" pattern="[A-Z0-9]{1,17}" required>
@@ -30,12 +30,11 @@
 							<input type="text" class="form-control" name="plate" placeholder="License Plate" id="plate" pattern="[A-Z0-9]{1,8}" required>
 						</div>
 						<div class="custom-select">
-							<input list="types" class="form-control" name="type" id="type" placeholder="Pick a Vehicle Type" required>
-							<datalist id="types">
-								<option value="Truck">
-								<option value="Trailer">
-							</datalist>
-
+							<select class="form-select" name="type" id="type" required>
+							  <option selected>Select Type of Vehicle</option>
+							  <option value="Truck">Truck
+							  <option value="Trailer">Trailer
+							</select>
 						</div><br>
 					<div class="msg">{{ msg }}</div>
 
