@@ -3,28 +3,44 @@
 {% block title %}Profile{% endblock %}
 
 {% block content %}
+
+<main>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+      <div class="d-grid gap-2 d-md-block">
+      <div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('home')}}">Back</a></div>
+      </div>
+    </header>
 <h2>Profile Page</h2>
-<div>
-    <p>Your account details are below:</p>
-    <table>
-        <tr>
-            <td>Username:</td>
-            <td>{{ account.UserName }}</td>
-        </tr>
-        <tr>
-            <td>First Name:</td>
-            <td>{{ account.FirstName }}</td>
-        </tr>
-        <tr>
-            <td>Last Name:</td>
-            <td>{{ account.LastName }}</td>
-        </tr>
-        <tr>
-            <td>User Type:</td>
-            <td>{{ account.UserType }}</td>
-        </tr>
-    </table>
-    <a href="{{ url_for('updateProfile') }}">Update Profile</a>
-    <a href="{{ url_for('updatePassword') }}">Update Password</a>
-</div>
+      <div class="p-5 mb-4 bg-light border rounded-3 text-center container">
+      <div class="container-md py-5 d-grid gap-4">
+        <h2 class="fw-bold">{{ account.FirstName }}, your account details are below:</h2>
+        <table class="table table-striped table-hover table-bordered table-responsive">
+          <thead>
+          <tr>
+            <th scope="col">Username:</th>
+            <th scope="col">First Name:</th>
+            <th scope="col">Last Name:</th>
+            <th scope="col">User Type:</th>
+          </tr>
+          </thead>
+            <tbody>
+            <tr>
+                <td>{{ account.UserName }}</td>
+                <td>{{ account.FirstName }}</td>
+                <td>{{ account.LastName }}</td>
+                <td>{{ account.UserType }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-grid gap-2 d-md-block">
+            <a class="btn btn-danger btn-sm btn-block" href="{{url_for('updateProfile')}}" role="button">Update Profile</a><br><br>
+            <a class="btn btn-danger btn-sm btn-block" href="{{url_for('updatePassword')}}" role="button">Update Password</a>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
 {% endblock %}
+
