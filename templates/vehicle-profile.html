@@ -60,6 +60,8 @@
                 <th scope="col">ID</th>
                 <th scope="col">Date</th>
                 <th scope="col">Mileage</th>
+                <th scope="col">Services</th>             
+                <th scope="col">Requester</th>
 
               </tr>
               </thead>
@@ -70,11 +72,19 @@
                   <td>{{ vehicle.VehicleID }}</td>
                   <td>{{ entry.EntryDate }}</td>
                   <td>{{ entry.MileageAtTime }}</td>
+                  <td><ul>
+                    {% for service in serviceList %}
+                    {% if service.Entry == entry.EntryID %}
+                      <li>{{ service.Service }}</li>
+                    {% endif %}
+                  {% endfor %}
+                  </ul>
+                  </td>                  
+                  <th>{{ entry.Requester }}</th>
                 </tr>
               </tbody>
                 {% endfor %}
             </table>
-              <input class="btn btn-primary btn-lg btn-block" type="submit" value="View Maintenance">
 
             </form>
         </div>
@@ -101,6 +111,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Date</th>
                 <th scope="col">Mileage</th>
+
               </tr>
               </thead>
                   {% for entry in entries %}
