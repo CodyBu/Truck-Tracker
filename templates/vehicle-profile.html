@@ -52,85 +52,46 @@
         <div class="p-5 mb-4 bg-light border rounded-3 text-center container">
           <div class="container-md py-5 d-grid gap-4">
             <h2 class="fw-bold">Maintenance</h2>
-            <form action="{{ url_for('viewEntry') }}" method="post">
             <table class="table table-striped table-hover table-bordered table-responsive">
               <thead>
               <tr>
-                <th></th>
-                <th scope="col">ID</th>
                 <th scope="col">Date</th>
                 <th scope="col">Mileage</th>
                 <th scope="col">Services</th>             
-                <th scope="col">Requester</th>
+                <th scope="col">Requested By</th>
+                <th scope="col">Notes</th>
 
               </tr>
               </thead>
                   {% for entry in entries %}
               <tbody>
                 <tr>
-                  <td><input type="radio" name="selected" value="{{ entry.EntryID }}"></td>
-                  <td>{{ vehicle.VehicleID }}</td>
                   <td>{{ entry.EntryDate }}</td>
                   <td>{{ entry.MileageAtTime }}</td>
-                  <td><ul>
+                  <td>
                     {% for service in serviceList %}
                     {% if service.Entry == entry.EntryID %}
-                      <li>{{ service.Service }}</li>
+                    {{ service.Service }}<br>
                     {% endif %}
-                  {% endfor %}
-                  </ul>
+                    {% endfor %}
                   </td>                  
-                  <th>{{ entry.Requester }}</th>
+                  <td>{{ entry.Requester }}</td>
+                  <td>
+                    {% for note in noteList %}
+                    {% if note.Entry == entry.EntryID %}
+                    {{ note.NoteText }}
+                    {% endif %}
+                    {% endfor %}
+                  </td>
                 </tr>
               </tbody>
                 {% endfor %}
             </table>
-
-            </form>
         </div>
         <div> <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('addEntry') }}">Add Maintenance</a></div>
         </div>
       </div>
     </div>
-<br>
-    <p>
-      <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample1" role="button" aria-expanded="false" aria-controls="collapseExample">
-        Notes
-      </a>
-    </p>
-    <div class="collapse" id="collapseExample1">
-      <div class="card card-body">
-        <div class="p-5 mb-4 bg-light border rounded-3 text-center container">
-          <div class="container-md py-5 d-grid gap-4">
-            <h2 class="fw-bold">Notes</h2>
-            <form action="{{ url_for('viewEntry') }}" method="post">
-            <table class="table table-striped table-hover table-bordered table-responsive">
-              <thead>
-              <tr>
-                <th></th>
-                <th scope="col">ID</th>
-                <th scope="col">Date</th>
-                <th scope="col">Mileage</th>
-
-              </tr>
-              </thead>
-                  {% for entry in entries %}
-              <tbody>
-                <tr>
-                  <td><input type="radio" name="selected" value="{{ entry.EntryID }}" id="{{ entry.EntryID }}"></td>
-                  <td>{{ vehicle.VehicleID }}</td>
-                  <td>{{ entry.EntryDate }}</td>
-                  <td>{{ entry.MileageAtTime }}</td>
-                </tr>
-              </tbody>
-                {% endfor %}
-            </table>
-
-              <div> <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('viewNotes') }}">View Note</a></div>
-            </form>
-        </div>
-        <div> <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('addNote') }}">Add Note</a></div>
-        </div>
       </div>
     </div>
   </div>

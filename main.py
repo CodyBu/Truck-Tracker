@@ -261,17 +261,25 @@ def vehicleProfile():
         session['VehicleID'] = vehicleID
         cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % vehicleID)
         vehicle = cursor.fetchone()
-        cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\"' % vehicleID)
+        cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\" ORDER BY EntryDate' % vehicleID)
         entries = cursor.fetchall()        
-        cursor.execute('SELECT * FROM SERVICE_JUNCTION')
-        serviceList = cursor.fetchall()  
-        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'], serviceList = serviceList)
+        cursor.execute('SELECT * FROM SERVICE_JUNCTION WHERE Entry IN (SELECT EntryID FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\")' % vehicleID)
+        serviceList = cursor.fetchall()
+        cursor.execute('SELECT * FROM NOTE WHERE Entry IN (SELECT EntryID FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\")' % vehicleID)
+        noteList = cursor.fetchall()
+        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'], serviceList=serviceList, noteList=noteList)
     elif 'VehicleID' in session:
         cursor.execute('SELECT * FROM VEHICLE WHERE VehicleID = \"%s\"' % session['VehicleID'])
         vehicle = cursor.fetchone()
-        cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\"' % session['VehicleID'])
+        cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\" ORDER BY EntryDate' % session['VehicleID'])
         entries = cursor.fetchall()
-        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'])
+        cursor.execute(
+            'SELECT * FROM SERVICE_JUNCTION WHERE Entry IN (SELECT EntryID FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\")' % session['VehicleID'])
+        serviceList = cursor.fetchall()
+        cursor.execute(
+            'SELECT * FROM NOTE WHERE Entry IN (SELECT EntryID FROM MAINTENANCE_ENTRY WHERE Vehicle = \"%s\")' % session['VehicleID'])
+        noteList = cursor.fetchall()
+        return render_template('vehicle-profile.html', vehicle=vehicle, entries=entries, type=session['UserType'], serviceList=serviceList, noteList=noteList)
     else:
         return redirect(url_for('viewVehicles'))
 
@@ -308,20 +316,6 @@ def addEntry():
     cursor.execute('SELECT ServiceName FROM Service')
     serviceList = cursor.fetchall()
     return render_template('add-entry.html', msg=msg, serviceList=serviceList)
-
-@app.route('/vehicles/view-entry', methods=['GET', 'POST'])
-def viewEntry():
-    if request.method == 'POST' and 'selected' in request.form:
-        entryID = int(request.form['selected'])
-        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('SELECT * FROM MAINTENANCE_ENTRY WHERE EntryID = %d' % entryID)
-        entry = cursor.fetchone()
-        cursor.execute('SELECT * FROM NOTE WHERE Entry = %d' % entryID)
-        noteList = cursor.fetchall()
-        cursor.execute('SELECT * FROM SERVICE_JUNCTION , MAINTENANCE_ENTRY WHERE SERVICE_JUNCTION.Entry = MAINTENANCE_ENTRY.EntryID' % entryID)
-        serviceList = cursor.fetchall()
-        return render_template('entry-profile.html', entry=entry, noteList=noteList, serviceList=serviceList)
-    return redirect(url_for('vehicleProfile'))
 
 #Note Section
 @app.route('/notes/add-note', methods=['GET', 'POST'])
