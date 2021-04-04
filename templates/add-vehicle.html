@@ -1,6 +1,6 @@
 {% extends 'layout.html' %}
 
-{% block title %}Add Vehicle{% endblock %}
+{% block title %}Add Service{% endblock %}
 
 {% block content %}
 
@@ -10,47 +10,31 @@
 		<div class="container py-4">
 			<header class="pb-3 mb-4 border-bottom">
 				<div class="d-grid gap-2 d-md-block">
-					<div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('viewVehicles') }}">Back</a></div>
+					<div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('viewServices') }}">Back</a></div>
 				</div>
 			</header>
 			<div class="p-5 mb-4 bg-light border rounded-3 text-center container">
 				<div class="container-md py-5 d-grid gap-4">
-					<h2 class="fw-bold">Add Vehicle</h2>
-					<form action="{{ url_for('addVehicle') }}" method="post" autocomplete="off">
+					<h2 class="fw-bold">Add a Service</h2>
+					<form action="{{ url_for('addService') }}" method="post" autocomplete="off">
 						<div class="mb-3">
-							<input type="text" class="form-control" name="vehicleid" placeholder="Vehicle ID" id="vehicleid" pattern="[A-Za-z0-9 ]{1,10}" required>
+							<input type="text" class="form-control" name="name" placeholder="Service Name" id="name" required>
 						</div>
 						<div class="mb-3">
-							<input type="text" class="form-control" name="vin" placeholder="VIN" id="vin" pattern="[A-Z0-9]{1,17}" required>
+							<textarea class="form-control" name="description" placeholder="Enter Service Description" id="description" rows="3" required></textarea>
 						</div>
-						<div class="mb-3">
-							<input type="number" class="form-control" name="mileage" placeholder="Mileage" id="mileage" pattern="[1-9]{1}[-][0-9]{10}"  required>
-						</div>
-						<div class="mb-3">
-							<input type="text" class="form-control" name="plate" placeholder="License Plate" id="plate" pattern="[A-Z0-9]{1,8}" required>
-						</div>
-						<div class="custom-select">
-							<select class="form-select" name="type" id="type" required>
-							  <option selected>Select Type of Vehicle</option>
-							  <option value="Truck">Truck
-							  <option value="Trailer">Trailer
-							</select>
-						</div><br>
+						<br>
 					<div class="msg">{{ msg }}</div>
-
-					<input class="btn btn-primary btn-lg btn-block" type="submit" value="Add Vehicle">
+					<input class="btn btn-primary btn-lg btn-block" type="submit" value="Add Service">
 					</form>
+					</div>
 				</div>
+				<footer class="pt-3 mt-4 text-muted border-top">
+					&copy; Truck Tracker 2021-2030
+				</footer>
 			</div>
-
-			<footer class="pt-3 mt-4 text-muted border-top">
-				&copy; Truck Tracker 2021-2030
-			</footer>
-		</div>
 	</main>
-	</div>
 </body>
-
 
 
 {% endblock %}
