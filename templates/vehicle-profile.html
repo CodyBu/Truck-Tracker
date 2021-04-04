@@ -8,7 +8,7 @@
   <div class="container py-4">
     <header class="pb-3 mb-4 border-bottom">
       <div class="d-grid gap-2 d-md-block">
-      <div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('home') }}"><i class="fas fa-user"></i>Back</a></div>
+      <div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('viewVehicles') }}"><i class="fas fa-user"></i>Back</a></div>
       </div>
     </header>
 
@@ -57,7 +57,7 @@
               <tr>
                 <th scope="col">Date</th>
                 <th scope="col">Mileage</th>
-                <th scope="col">Services</th>             
+                <th scope="col">Services</th>
                 <th scope="col">Requested By</th>
                 <th scope="col">Notes</th>
 
@@ -74,7 +74,7 @@
                     {{ service.Service }}<br>
                     {% endif %}
                     {% endfor %}
-                  </td>                  
+                  </td>
                   <td>{{ entry.Requester }}</td>
                   <td>
                     {% for note in noteList %}
@@ -92,8 +92,11 @@
         </div>
       </div>
     </div>
-      </div>
-    </div>
+      
+
+    <footer class="pt-3 mt-4 text-muted border-top">
+      &copy; Truck Tracker 2021-2030
+    </footer>
   </div>
 </main>
 
