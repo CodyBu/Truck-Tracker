@@ -13,7 +13,7 @@
 				</div>
 			</header>
 			<div class="p-5 mb-4 bg-light border rounded-3 text-center container">
-             <div class="container-md py-5 d-grid gap-4">
+      <div class="container-md py-5 d-grid gap-4">
     <h2 class = "fw-bold">SERVICES PAGE</h2>
 <div>
     <table class = "table table-striped table-hover table-bordered table-responsive">
@@ -32,6 +32,13 @@
         </tbody>
         {% endfor %}
     </table>
+		<div> <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('addService') }}"><i class="fas fa-user"></i>Add Service</a></div>
 </div>
-<div> <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('addService') }}"><i class="fas fa-user"></i>Add Service</a></div>
+</div>
+</div>
+<footer class="pt-3 mt-4 text-muted border-top">
+	&copy; Truck Tracker 2021-2030
+</footer>
+</div>
+</main>
 {% endblock %}
