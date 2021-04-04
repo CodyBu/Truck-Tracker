@@ -18,9 +18,9 @@
 					<h2 class="fw-bold">Add a Note</h2>
 					<form action="{{ url_for('addNote') }}" method="post" autocomplete="off">
 						<div class="mb-3">
-							<textarea class="form-control" name="note" placeholder="Enter note message" id="note" rows="3"></textarea>
+							<textarea class="form-control" name="note" placeholder="Enter note message" id="note" rows="3" required></textarea>
 						</div>
-						</div><br>
+						<br>
 					<div class="msg">{{ msg }}</div>
 
 					<input class="btn btn-primary btn-lg btn-block" type="submit" value="Add Note">
@@ -32,7 +32,7 @@
 			</footer>
 		</div>
 	</main>
-	</div>
+
 </body>
 
 
