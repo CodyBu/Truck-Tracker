@@ -142,7 +142,7 @@ def updatePassword():
             msg = 'Passwords do not match'
             return render_template('update-password.html', msg=msg)
         newHashPassword = sha256(newPassword.encode()).hexdigest()
-        cursor.execute('UPDATE User SET HashPwd = \"%s\" WHERE UserName = \"%s\"' % (newHashPassword, session['UserName']))
+        cursor.execute('UPDATE USER SET HashPwd = \"%s\" WHERE UserName = \"%s\"' % (newHashPassword, session['UserName']))
         mysql.connection.commit()
         msg = "Password updated successfully!"
     return render_template('update-password.html', msg=msg)
@@ -294,9 +294,16 @@ def addEntry():
         mileage = int(request.form['mileage'])
         entryDate = request.form['entrydate']
         selected = request.form.getlist('services')
-
+        cursor.execute('SELECT Mileage FROM VEHICLE WHERE VehicleID = \"%s\"' % session['VehicleID'])
+        currentMileage = cursor.fetchone()['Mileage']
+        if mileage < currentMileage:
+            msg = "Invalid Mileage Value! New Mileage Must Be Larger Than Current Mileage!"
+            cursor.execute('SELECT ServiceName FROM Service')
+            serviceList = cursor.fetchall()
+            return render_template('add-entry.html', msg=msg, serviceList=serviceList)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cursor.execute('INSERT INTO MAINTENANCE_ENTRY (Vehicle, EntryDate, MileageAtTime, Requester) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (session['VehicleID'], entryDate, mileage, session['UserName']))
+        cursor.execute('UPDATE VEHICLE SET Mileage = %d WHERE VehicleID = \"%s\"' % (mileage, session['VehicleID']))
         mysql.connection.commit()
         cursor.execute('SELECT LAST_INSERT_ID()')
         entryID = cursor.fetchone()['LAST_INSERT_ID()']
