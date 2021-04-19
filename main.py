@@ -392,5 +392,10 @@ def viewServices():
     serviceList = cursor.fetchall()
     return render_template('services.html', serviceList=serviceList)
 
+# Manual
+@app.route('/manual')
+def viewManual():
+    return render_template('manual.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
