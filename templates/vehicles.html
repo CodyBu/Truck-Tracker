@@ -33,7 +33,7 @@
           {% for vehicle in vehicleList %}
       <tbody>
         <tr>
-          <td><input type="radio" name="selected" value="{{ vehicle.VehicleID }}" id="{{ vehicle.VehicleID }}" onclick="submit()"></td>
+          <td><input type="radio" class="btn-check" name="selected" value="{{ vehicle.VehicleID }}" id="{{ vehicle.VehicleID }}" onclick="submit()"><label class="btn btn-primary" for="{{ vehicle.VehicleID }}">View</label></td>
           <td>{{ vehicle.VehicleID }}</td>
           <td>{{ vehicle.LicensePlate }}</td>
           <td>{{ vehicle.VehicleType }}</td>
@@ -43,7 +43,7 @@
     </table>
       <br>
       <br>
-      <div> <a class="btn btn-primary btn-lg btn-block" href="{{ url_for('addVehicle') }}">Add Vehicle</a></div>
+      <div> <a class="btn btn-success btn-lg btn-block" href="{{ url_for('addVehicle') }}">Add Vehicle</a></div>
     </form>
     </div>
 </div>
