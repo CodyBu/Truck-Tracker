@@ -289,10 +289,10 @@ def addEntry():
     # Output message if something goes wrong...
     msg = ''
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    if request.method == 'POST' and ('mileage' and 'entrydate') in request.form:
+    if request.method == 'POST' and 'mileage' in request.form:
+        print("this was called")
         # Create variables for easy access
         mileage = int(request.form['mileage'])
-        entryDate = request.form['entrydate']
         selected = request.form.getlist('services')
         cursor.execute('SELECT Mileage FROM VEHICLE WHERE VehicleID = \"%s\"' % session['VehicleID'])
         currentMileage = cursor.fetchone()['Mileage']
@@ -302,7 +302,7 @@ def addEntry():
             serviceList = cursor.fetchall()
             return render_template('add-entry.html', msg=msg, serviceList=serviceList)
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        cursor.execute('INSERT INTO MAINTENANCE_ENTRY (Vehicle, EntryDate, MileageAtTime, Requester) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (session['VehicleID'], entryDate, mileage, session['UserName']))
+        cursor.execute('INSERT INTO MAINTENANCE_ENTRY (Vehicle, EntryDate, MileageAtTime, Requester) VALUES ( \"%s\", \"%s\", %d, \"%s\")' % (session['VehicleID'], date.today(), mileage, session['UserName']))
         cursor.execute('UPDATE VEHICLE SET Mileage = %d WHERE VehicleID = \"%s\"' % (mileage, session['VehicleID']))
         mysql.connection.commit()
         cursor.execute('SELECT LAST_INSERT_ID()')
