@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block title %}Manual{% endblock %}
+
+
+
+
+{% block content %}
+<main>
+  <div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+      <div class="d-grid gap-2 d-md-block">
+      <div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('home') }}"><i class="fas fa-user"></i>Home</a></div>
+      </div>
+    </header>
+<div class="p-5 mb-4 bg-light border rounded-3 text-center container">
+  <div class="container-md py-5 d-grid gap-4">
+    <h2 class="fw-bold">Manual</h2>
+    
+</div>
+
+</div>
+<footer class="pt-3 mt-4 text-muted border-top">
+  &copy; Truck Tracker 2021-2030
+</footer>
+</div>
+</main>
+{% endblock %}
