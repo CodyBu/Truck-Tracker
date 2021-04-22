@@ -7,79 +7,167 @@
     <div class="container py-4">
         <header class="pb-3 mb-4 border-bottom">
             <div class="d-grid gap-2 d-md-block">
-            <div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('home') }}"><i class="fas fa-user"></i>Home</a></div>
+                <div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('home') }}"><i class="fas fa-user"></i>Home</a></div>
             </div>
         </header>
-    <div class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
-        <div>
+    <div class="p-5 mb-4 bg-light border rounded-3 container">
+        <div class="container-md py-5 d-grid gap-4">
             <h2 class="fw-bold">Manual</h2>
         </div>
         <div>
             <a href="#intro">1. Introduction</a><br>
             <a href="#home">2. Home Page</a><br>
-                &emsp;&emsp;&nbsp;<a href="#admin">2.1 Admin Page</a><br>
-                &emsp;&emsp;&nbsp;<a href="#mech">2.2 Mechanic Page</a><br>
-                &emsp;&emsp;&nbsp;<a href="#drive">2.3 Driver Page</a><br>
+                &emsp;&emsp;&nbsp<a href="#admin">2.1 Admin Page</a><br>
+                &emsp;&emsp;&nbsp<a href="#mech">2.2 Mechanic Page</a><br>
+                &emsp;&emsp;&nbsp<a href="#drive">2.3 Driver Page</a><br>
             <a href="#notes">3. Notes</a><br>
             <a href="#employees">4. Employees</a><br>
             <a href="#vehicles">5. Truck/Trailer List</a><br>
             <a href="#services">6. Services</a><br>
         </div>
     </div>
-    <div id="intro" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
-        <h4> 1. Introduction</h4>
-        <p>
-We live in a world where time means money. A better management of the current tasks that the employees have to complete, means more time to be spent for other tasks which automatically implies more money for the company.
-This application is created for a truck company to better keep track of the maintenance records for their vehicles, and for better communication between the employees (drivers, mechanics and the owner). All employees can post notes related to the trucks and their operation, this way a better management of the services needed to be performed is realized. The mechanics can view or record all the repairs and maintenance done to the trucks, while the owner has all the attributes of the employees. He has all the trucks, trailers, notes, maintenance records, services and employees saved in the database, reducing the possibility of maintenance and communication issues.
-        <br>
-        <img src = "../static/logo/logo.jpg" class="img-thumbnail">
+
+    <div id="intro">
+        <div class="p-5 mb-4 bg-light border rounded-3 container">
+            <div class="container-md py-1 d-grid gap-4">
+                <h2 class="fw-bold">1. Introduction</h2>
+            </div>
+
+            <br>
+        <p>We live in a world where time means money. A better management of the current tasks that the employees have to complete, means more time to be spent for other tasks which automatically implies more money for the company.
+        This application is created for a truck company to better keep track of the maintenance records for their vehicles, and for better communication between the employees (drivers, mechanics and the owner). All employees can post notes related to the trucks and their operation, this way a better management of the services needed to be performed is realized. The mechanics can view or record all the repairs and maintenance done to the trucks, while the owner has all the attributes of the employees. He has all the trucks, trailers, notes, maintenance records, services and employees saved in the database, reducing the possibility of maintenance and communication issues.
         </p>
+        </div>
     </div>
-    <div id="home" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
-        <h4> 2. Home</h4>
 
-At the top of the page, there is a navigation bar with some functionalities accessible from anywhere in the system. The first item is the “Home” button, which will bring you back to your home page. Next is the “Profile” button, which will bring to a page containing information about your account (see below). From the profile page, you will be able to update your name and change your password if necessary. After the profile, there is the “Log Out” button, which will log you out of the system and bring you back to the login page.
-        <img src = "../static/images/vehicles.png" class="img-thumbnail">
+    <div id="home">
+        <div class="p-5 mb-4 bg-light border rounded-3 container">
+            <div class="container-md py-1 d-grid gap-4">
+                <h2 class="fw-bold">2. Home Page</h2>
+            </div>
+        <div>
+            <img src="../static/images/profile.png" class="img-thumbnail" alt="home">
+        </div>
+        <br>
+        <p>At the top of the page, there is a navigation bar with some functionalities accessible from anywhere in the system. The first item is the “Home” button, which will bring you back to your home page. Next is the “Profile” button, which will bring to a page containing information about your account (see below). From the profile page, you will be able to update your name and change your password if necessary. After the profile, there is the “Log Out” button, which will log you out of the system and bring you back to the login page.
+        </p>
+        </div>
     </div>
-    <div id="admin" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
-        <h4>2.1. Admin</h4>
 
-The admin has access to all functionality within the system. He can add/delete employees, add/delete vehicles, view/add/delete notes, view/add services. Each item on the home page will be described in detail below.
-        <img src = "../static/images/vehicles.png" class="img-thumbnail">
+    <div id="admin">
+        <div class="p-5 mb-4 bg-light border rounded-3 container">
+            <div class="container-md py-1 d-grid gap-4">
+                <h2 class="fw-bold">2.1 Administrator Page</h2>
+            </div>
+        <div>
+        <center><img src="../static/images/admin.png" class="img-thumbnail" alt="admin"></center>
+        </div>
+        <br>
+        <p>The admin has access to all functionality within the system. He can add/delete employees, add/delete vehicles, view/add/delete notes, view/add services. Each item on the home page will be described in detail below.
+        </p>
+        </div>
     </div>
-    <div id="mech" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
 
-        <h4>2.2. Mechanic</h4>
+    <div id="mech">
+        <div class="p-5 mb-4 bg-light border rounded-3 container">
+            <div class="container-md py-1 d-grid gap-4">
+                <h2 class="fw-bold">2.2 Mechanic Page</h2>
+            </div>
+        <div>
+            <center><img src="../static/images/mechanic.png" class="img-thumbnail" alt="mech"></center>
+        </div>
+        <br>
+        <p>Mechanics have access to all functionality as the admin, except the ability to view and add employees.
+        </p>
+        </div>
+    </div>
 
-Mechanics have access to all functionality as the admin, except the ability to view and add employees.
-        <img src = "../static/images/vehicles.png" class="img-thumbnail">
+    <div id="drive">
+        <div class="p-5 mb-4 bg-light border rounded-3 container">
+            <div class="container-md py-1 d-grid gap-4">
+                <h2 class="fw-bold">2.3 Driver Page</h2>
+            </div>
+            <div>
+                <img src="../static/images/driver.png" class="img-thumbnail" alt="driver">
+            </div>
+            <br>
+            <p>Drivers only posses the ability to view and create notes.</p>
+        </div>
     </div>
-    <div id="drive" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
-        <h4>2.3. Driver</h4>
 
-Drivers only posses the ability to view and create notes.
-        <img src = "../static/images/vehicles.png" class="img-thumbnail">
+        <div id="notes">
+            <div class="p-5 mb-4 bg-light border rounded-3 container">
+                <div class="container-md py-1 d-grid gap-4">
+                    <h2 class="fw-bold">3. Notes</h2>
+            </div>
+            <div>
+                <img src="../static/images/notes.png" class="img-thumbnail" alt="notes">
+            </div>
+            <br>
+            <p>On the notes page, you will see a list of messages made by different users. Below the messages, there are buttons to allow a note to be added or deleted. To create a note, simply click on the “Add Note” button, and you will be brought to a form to add a note (see below). To delete a note, select the button to the left of the note that you want to delete and click the “Delete Note” button. You will be prompted with a message to confirm you actually want to delete the message. Administrators possess the ability to delete any notes within the system, where other users can only delete the notes that they created.
+            </p>
+            </div>
+        </div>
+    <div id="employees">
+        <div class="p-5 mb-4 bg-light border rounded-3 container">
+            <div class="container-md py-1 d-grid gap-4">
+                <h2 class="fw-bold">4. Employees</h2>
+            </div>
+            <div>
+                <img src="../static/images/employees.png" class="img-thumbnail" alt="employees">
+            </div>
+            <br>
+            <p>When on the employee page, administrators will be able to view the employees in the system. They will also have the ability to add and delete employees. Clicking the “Add Employee” button will bring you to a page where you can fill out the new employee’s information and add them to the system (see below). To delete an employee, select the button to the left of their name and click the “Delete Employee” button. You will be prompted with a confirmation message and the employee will be deleted if you confirm.
+            </p>
+            <div>
+                <center><img src="../static/images/deleteEmployee.png" class="img-thumbnail" alt="deleteemployees"></center>
+            </div>
+        </div>
     </div>
-    <div id="notes" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
-        <h4> 3. Notes</h4>
 
-On the notes page, you will see a list of messages made by different users. Below the messages, there are buttons to allow a note to be added or deleted. To create a note, simply click on the “Add Note” button, and you will be brought to a form to add a note (see below). To delete a note, select the button to the left of the note that you want to delete and click the “Delete Note” button. You will be prompted with a message to confirm you actually want to delete the message. Administrators possess the ability to delete any notes within the system, where other users can only delete the notes that they created.
-        <img src = "../static/images/vehicles.png" class="img-thumbnail">
-    </div>
-    <div id="employees" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
-        This is the employees section
-    </div>
-    <div id="vehicles" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
+    <div id="vehicles">
+         <div class="p-5 mb-4 bg-light border rounded-3 container">
+            <div class="container-md py-1 d-grid gap-4">
+                <h2 class="fw-bold">5. Track/Trailer List</h2>
+            </div>
 
-        <img src = "../static/images/vehicles.png" class="img-thumbnail">
+            <br>
+             <p>Selecting the “Truck/Trailer List” button on the homescreen will bring you to a page that lists all trucks and trailers within the system. From the page, you can click the “View” button to the left of the vehicle to view that vehicle in more detail (see below).
+            </p>
+
+         <div>
+            <img src="../static/images/vehicles.png" class="img-thumbnail" alt="vehicles">
+         </div>
+            <br>
+            <p>After selecting a vehicle and being brought to that vehicle’s page, you will see the information pertaining to that vehicle as well as the maintenance entities associated with it. If you are an administrator, you will see an option to delete the vehicle if you would like. Deleting a vehicle works by clicking the “Delete Vehicle” button and confirming that you would like to do so. Under the maintenance entries, there is a button that gives you the ability to add a maintenance entry for that vehicle. Clicking the “Add Maintenance” button will bring you to a form where you can fill out information about the entry (see below). After filling out the form, click the “Add Maintenance” button at the bottom and that entry will be added.
+            </p>
+         </div>
     </div>
-    <div id="services" class="p-5 mb-4 bg-light border rounded-3 d-grid py-5 gap-4">
-        This is the services section
-    </div>
-        <footer class="pt-3 mt-4 text-muted border-top">
-            &copy; Truck Tracker 2021-2030
-        </footer>
+
+    <div id="services">
+        <div class="p-5 mb-4 bg-light border rounded-3 container">
+            <div class="container-md py-1 d-grid gap-4">
+                <h2 class="fw-bold">6. Services</h2>
+            </div>
+            <div>
+            <br>
+            <p>Services is a storage for the services that can be done to any vehicle in stock. Once a service is saved in this database, it can be used whenever maintenance it’s done.
+            Clicking on the “Services” button on the home page, you will be directed to the services page where all the services will be listed along with a short description (if there is one). Also on this page is a button for adding new services.
+            </p>
+            <img src="../static/images/services.png" class="img-thumbnail" alt="services">
+            </div>
+            <br>
+            <p>If a new service has to be added to the database then by clicking on the “Add Service” button the user can add the service. The description of the service is completely optional.
+	Every page in the “Services” has a back button so the user can return to the previous page.
+ 	For example: if services like “Oil changed”, “Flat tire changed” or “Light Bulb replaced” are already saved in the database than they can be viewed on this page and used at any time, and if a new service is needed to be added, like “FlatBed Truck Service” has to be done to the vehicle and its not recorded in the database yet, then the user can add it in the database by clicking the “add service” button. Once it is added it will be displayed next to the other services and whenever any maintenance is done to the truck then the service “FlatBed Truck Service” will be available as a choice.
+            </p>
+        </div>
     </div>
   </div>
+
+    <footer class="pt-3 mt-4 text-muted border-top">
+        &copy; Truck Tracker 2021-2030
+    </footer>
+
 </main>
 {% endblock %}
