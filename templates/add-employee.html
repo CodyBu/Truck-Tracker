@@ -7,38 +7,47 @@
 			<header class="pb-3 mb-4 border-bottom">
 
 				<div class="d-grid gap-2 d-md-block">
-				<div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('viewEmployees') }}">Back</a></div>
+					<div> <a class="btn btn-secondary btn-sm btn-block" href="{{ url_for('viewEmployees') }}">Back</a></div>
 				</div>
+
 			</header>
+
 			<div class="p-5 mb-4 bg-light border rounded-3 text-center container">
 				<div class="container-md py-5 d-grid gap-4">
 					<h2 class="fw-bold">Add Employee</h2>
-<form action="{{ url_for('addEmployee') }}" method="post" autocomplete="off">
-	<div class="mb-3">
-		<input type="text" class="form-control" name="username" placeholder="Username" id="username" pattern="[A-Za-z0-9]{1,10}"required>
-	</div>
-	<div class="mb-3">
-		<input type="password" class="form-control" name="password" placeholder="Password" id="password" pattern="[A-Za-z0-9]{1,64}"required>
-	</div>
-	<div class="mb-3">
-		<input type="text" class="form-control" name="firstname" placeholder="First Name" id="firstname" pattern="[A-Za-z]{1,30}" required>
-	</div>
-	<div class="mb-3">
-		<input type="text" class="form-control" name="lastname" placeholder="Last Name" id="lastname" pattern="[A-Za-z]{1,30}" required>
-	</div>
-			<div class="custom-select">
-				<select class="form-select" name="usertype" id="usertype" required>
-					<option selected>Pick a User Type</option>
-					<option value="Mechanic">Mechanic
-					<option value="Driver">Driver
-				</select>
-			</div><br>
-<br>
-	<div class="msg">{{ msg }}</div>
-<input class="btn btn-success btn-lg btn-block" type="submit" value="Add Employee">
-</form>
+
+					<form action="{{ url_for('addEmployee') }}" method="post" autocomplete="off">
+						<div class="mb-3">
+							<input type="text" class="form-control" name="username" placeholder="Username" id="username" pattern="[A-Za-z0-9]{1,10}"required>
+						</div>
+
+						<div class="mb-3">
+							<input type="password" class="form-control" name="password" placeholder="Password" id="password" pattern="[A-Za-z0-9]{1,64}"required>
+						</div>
+
+						<div class="mb-3">
+							<input type="text" class="form-control" name="firstname" placeholder="First Name" id="firstname" pattern="[A-Za-z]{1,30}" required>
+						</div>
+
+						<div class="mb-3">
+							<input type="text" class="form-control" name="lastname" placeholder="Last Name" id="lastname" pattern="[A-Za-z]{1,30}" required>
+						</div>
+
+						<div class="custom-select">
+							<select class="form-select" name="usertype" id="usertype" required>
+								<option selected>Pick a User Type</option>
+								<option value="Mechanic">Mechanic
+								<option value="Driver">Driver
+							</select>
+						</div><br><br>
+
+						<div class="msg">{{ msg }}</div>
+						<input class="btn btn-success btn-lg btn-block" type="submit" value="Add Employee">
+					</form>
+
 				</div>
 			</div>
+
 			<footer class="pt-3 mt-4 text-muted border-top">
 				&copy; Truck Tracker 2021-2030
 			</footer>
