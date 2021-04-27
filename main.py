@@ -290,7 +290,6 @@ def addEntry():
     msg = ''
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
     if request.method == 'POST' and 'mileage' in request.form:
-        print("this was called")
         # Create variables for easy access
         mileage = int(request.form['mileage'])
         selected = request.form.getlist('services')
